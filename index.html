@@ -787,7 +787,7 @@
                     showToast("Login successful. Redirecting...", "success", "Welcome");
                     //  JWT AUTHENTICATION — store token for the applicant session
                     if (data.token) localStorage.setItem('dmrc_user_token', data.token);
-                    setTimeout(() => { window.location.href = 'index1.html'; }, 900);
+                    setTimeout(() => { window.location.href = 'main.html'; }, 700);
                 } else {
                     showToast("Your account has been created. You can log in now.", "success", "Registered");
                     toggleViewMode('login');
