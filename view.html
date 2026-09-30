@@ -28,14 +28,14 @@
         .action-btn { background-color: #059669; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .action-btn:hover { background-color: #047857; }
 
-        /* 🎯 APPLICATION STATUS TRACKING — color-coded status dropdown */
+        /*  APPLICATION STATUS TRACKING — color-coded status dropdown */
         .status-select { padding: 6px 10px; border-radius: 4px; font-weight: 600; font-size: 13px; border: 1px solid #cbd5e1; cursor: pointer; outline: none; }
         .status-select.status-pending { background: #fef3c7; color: #92400e; border-color: #fde68a; }
         .status-select.status-under-review { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
         .status-select.status-approved { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
         .status-select.status-rejected { background: #ffe4e6; color: #9f1239; border-color: #fecdd3; }
 
-        /* 🎯 SEARCH + FILTER + PAGINATION */
+        /*  SEARCH + FILTER + PAGINATION */
         .filter-bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
         .filter-field { display: flex; flex-direction: column; gap: 6px; }
         .filter-field label { font-size: 12px; font-weight: 600; color: #475569; }
@@ -66,7 +66,7 @@
         .doc-link { color: #2563eb; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
         .doc-link:hover { text-decoration: underline; }
 
-        /* 🎯 FIXED SYMMETRICAL INLINE INPUT MATRIX OVERRIDE WORKSPACE (IMAGE 2 REPLICA) */
+        /*  FIXED SYMMETRICAL INLINE INPUT MATRIX OVERRIDE WORKSPACE (IMAGE 2 REPLICA) */
         .user-creation-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 16px; align-items: flex-end; width: 100%; }
         .user-field-group { text-align: left; display: flex; flex-direction: column; width: 100%; }
         .user-field-group label { display: block; font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 6px; }
@@ -75,9 +75,9 @@
         .user-add-btn { background-color: #1e3a8a; color: white; border: none; padding: 0 24px; height: 38px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; white-space: nowrap; }
         .user-add-btn:hover { background-color: #13255c; }
 
-        /* =========================================================================
-           🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
-           ========================================================================= */
+        /* 
+            TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+            */
         .toast-container {
             position: fixed;
             top: 24px;
@@ -287,7 +287,7 @@
 </div>
 
 <script>
-    // 🎯 TOAST NOTIFICATION ENGINE
+    //  TOAST NOTIFICATION ENGINE
     function showToast(message, type = 'info', title = null, duration = 4500) {
         let container = document.querySelector('.toast-container');
         if (!container) {
@@ -331,7 +331,7 @@
     let localApplicationsCache = [];
     let currentPage = 1;
 
-    // 🎯 JWT AUTHENTICATION — every admin API call sends this token; redirect to login if missing
+    //  JWT AUTHENTICATION — every admin API call sends this token; redirect to login if missing
     const adminToken = localStorage.getItem('dmrc_admin_token');
     if (!adminToken) {
         showToast('Please log in to access the admin dashboard.', 'error', 'Login Required');
@@ -368,7 +368,7 @@
         fetch(`${BACKEND_URL}/api/admin/view-applications?${params.toString()}`, { headers: authHeaders() })
             .then(response => response.json().then(payload => ({ status: response.status, payload })))
             .then(({ status, payload }) => {
-                // 🎯 Session expired/invalid token — send admin back to login instead of
+                //  Session expired/invalid token — send admin back to login instead of
                 // showing a misleading "No applications found" message.
                 if (status === 401 || status === 403) {
                     showToast(payload.message || 'Session expired. Please log in again.', 'error', 'Session Expired');
@@ -423,7 +423,7 @@
             });
     }
 
-    // 🎯 SEARCH + FILTER + PAGINATION — renders page number buttons under the table
+    //  SEARCH + FILTER + PAGINATION — renders page number buttons under the table
     function renderPagination(pagination) {
         const bar = document.getElementById('pagination-bar');
         if (!pagination || pagination.totalPages <= 1) {
@@ -450,7 +450,7 @@
         loadApplications();
     }
 
-    // 🎯 APPLICATION STATUS TRACKING — called when admin changes the status dropdown
+    //  APPLICATION STATUS TRACKING — called when admin changes the status dropdown
     function updateApplicationStatus(applicationId, newStatus, selectEl) {
         const previousValue = selectEl.getAttribute('data-prev') || selectEl.value;
         selectEl.disabled = true;
