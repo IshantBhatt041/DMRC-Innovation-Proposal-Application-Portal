@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMRC Innovation Proposal Application Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 🎯 Save Draft button — matched to the Confirm & Submit button's visual weight */
+        .btn-save-draft {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e3a8a;
+            color: #ffffff;
+            border: none;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+        .btn-save-draft:hover { background: #16307a; transform: translateY(-1px); }
+        .btn-save-draft:active { transform: translateY(0); }
+        .btn-save-draft i { font-size: 15px; }
+
+        /* 🎯 Form completion progress bar — professional pill style with badge */
+        #form-progress-wrapper { max-width: 460px; width: 100%; margin-top: 10px; }
+        #form-progress-wrapper .progress-label-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        #form-progress-percent {
+            font-size: 13px;
+            font-weight: 800;
+            color: #1e3a8a;
+            background: #eef2ff;
+            padding: 2px 10px;
+            border-radius: 999px;
+            border: 1px solid #c7d2fe;
+        }
+        #form-progress-bar-track {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+        }
+        #form-progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: #1e3a8a;
+            transition: width 0.35s ease;
+        }
+    </style>
+    <link rel ="icon" href ="DMRC logo.png" type="image/png">
+</head>
+<body class="dmrc-body">
+
+   <header class="main-header">
+    <div class="header-left" style="width: 100%; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px;">
+         <div class="logo-wrapper">
+
+    <img src="DMRC logo.png" alt="DMRC Logo" class="dmrc-logo">
+
+    <div class="logo-text">
+
+        <h1>DMRC</h1>
+
+        <div class="hindi-name">
+            दिल्ली मेट्रो रेल कॉर्पोरेशन लिमिटेड
+        </div>
+
+        <div class="english-name">
+            DELHI METRO RAIL CORPORATION LTD.
+        </div>
+
+        <div class="hindi-venture">
+            (भारत सरकार एवं दिल्ली सरकार का संयुक्त उपक्रम)
+        </div>
+
+        <div class="english-venture">
+            (A JOINT VENTURE OF GOVT. OF INDIA AND GOVT. OF NCT OF DELHI)
+        </div>
+
+    </div>
+
+</div>
+
+        
+        <div class="header-title-block" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <h1 class="header-title">DMRC Innovation Proposal Application Form</h1>
+            <p class="header-subtitle">
+                <span class="mandatory-note">Note: All fields are mandatory.</span> Please fill all sections and upload documents.
+            </p>
+            <div id="form-progress-wrapper">
+                <div class="progress-label-row">
+                    <span id="form-progress-percent">0%</span>
+                </div>
+                <div id="form-progress-bar-track">
+                    <div id="form-progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+        
+         <button type="button" class="btn-save-draft" onclick="saveDraftManually()"> 
+             <i class="fa-regular fa-floppy-disk"></i> 
+             <span>Save Draft</span> 
+        </button>
+        
+    </div>
+</header>
+
+    <div class="main-container">
+        
+        <aside class="sidebar-panel">
+            <nav class="sidebar-nav" id="sidebar">
+                <button type="button" onclick="toggleSection(1)" id="side-btn-1" class="side-btn active">
+                    <i class="fa-solid fa-building"></i>
+                    <span>1. Company Info</span>
+                </button>
+                <button type="button" onclick="toggleSection(2)" id="side-btn-2" class="side-btn">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>2. Product & Innovation</span>
+                </button>
+                <button type="button" onclick="toggleSection(3)" id="side-btn-3" class="side-btn">
+                    <i class="fa-solid fa-users"></i>
+                    <span>3. Founders & Team</span>
+                </button>
+                <button type="button" onclick="toggleSection(4)" id="side-btn-4" class="side-btn">
+                    <i class="fa-solid fa-award"></i>
+                    <span>4. Credentials & Past Exp</span>
+                </button>
+                <button type="button" onclick="toggleSection(5)" id="side-btn-5" class="side-btn">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <span>5. Project Cost Details</span>
+                </button>
+                <button type="button" onclick="toggleSection(6)" id="side-btn-6" class="side-btn">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>6. Project Duration</span>
+                </button>
+                <button type="button" onclick="toggleSection(7)" id="side-btn-7" class="side-btn">
+                    <i class="fa-solid fa-square-plus"></i>
+                    <span>7. Startup Additional Info</span>
+                </button>
+                <button type="button" onclick="toggleSection(8)" id="side-btn-8" class="side-btn">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>8. Detailed Presentation</span>
+                </button>
+            </nav>
+
+            
+        </aside>
+
+        <form class="form-container" id="mainForm" onsubmit="return executeNodalFormTransmission(event) ">
+            
+            <div class="form-section" id="sec-1">
+                <div onclick="toggleSection(1)" class="section-header">
+                    <span>1. COMPANY INFORMATION/DETAILS:</span>
+                    <i class="fa-solid fa-chevron-down" id="arrow-1"></i>
+                </div>
+                <div class="accordion-content p-5" id="content-1">
+                    <div>
+                        <label class="field-label">1 (a) Name of company (Start-ups which are Not-for-profit are not eligible) <span class="required-star">*</span></label>
+                        <input name="company_name" type="text" required placeholder="Enter name of company" class="form-input">
+                    </div>
+                    
+                    <div class="grid-2 mt-3">
+                        <div>
+                            <label class="field-label">1 (b) Website details <span class="required-star">*</span></label>
+                            <input name="company_website" type="url" required placeholder="https://" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">1 (b) E-mail id of the Company <span class="required-star">*</span></label>
+                            <input name="company_email" type="email" required placeholder="Enter email" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="field-label">1 (b) Address of the Company <span class="required-star">*</span></label>
+                        <textarea name="company_address" rows="2" required placeholder="Enter complete address" class="form-input textarea-no-resize"></textarea>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="field-label">1 (c) Brief Details and background about the company <span class="required-star">*</span></label>
+                        <textarea name="company_brief_details" rows="3" required placeholder="Write brief details about your company" class="form-input textarea-no-resize"></textarea>
+                    </div>
+
+                    <div class="grid-2 mt-3">
+                        <div class="grid-2 align-start">
+                            <div>
+                                <label class="field-label">1 (d) Year of Incorporation <span class="required-star">*</span></label>
+                                <select name="year_of_incorporation" required class="form-input text-slate">
+                                    <option value="">Select year</option>
+                                    <option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">Upload Certificate of Incorporation (Notarised) <span class="required-star">*</span></label>
+                                <label class="upload-dashed-box">
+                                    <input name="certificate_of_incorporation_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">1 (e) Power of Attorney of the person submitting the application / Upload Power of Attorney of the person submitting the application (Notarised) <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="power_of_attorney_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">1 (f) Entity Type-Sole Proprietorship/Partnership/Company/ JV/Consortium (for partnership firm notarised copy of partnership deed must be uploaded, for Company notarised copy of Certificate of Incorporation must be uploaded, for JV the notarised copy of JV agreement must be uploaded and for Consortium notarised copy of the MOU must be uploaded) <span class="required-star">*</span></label>
+                            <select name="entity_type" required class="form-input text-slate">
+                                <option value="">Select Entity Type</option>
+                                <option>Sole Proprietorship</option><option>Partnership</option><option>Company</option><option>JV</option><option>Consortium</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Upload Relevant document for Entity Type as per details above <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box" style="margin-top: 40px;">
+                                <input name="entity_type_document_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div class="space-y-1">
+                            <label class="field-label">1 (g) Is the entity a Start up as recognised by DPIIT (An entity formed by splitting up or reconstructing an existing business shall not be considered a 'Start-up. Startups submitting the innovation proposals must invariably enclose with their offer the proof of their being registered with DPIIT as Start-up for the item/product/solution/software proposed for innovation <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 font-semibold mt-1">
+                                <label class="radio-label"><input type="radio" required name="dpiit_radio" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="dpiit_radio" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Upload proof of registration with DPIIT as Start-up for the similar item/category <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box" style="margin-top: 40px;">
+                                <input name="dpiit_proof_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div class="space-y-1">
+                            <label class="field-label">1 (h) Is the entity a Micro or Small Enterprise (MSE) as per MSME policy of Govt of India / Is the entity a MICRO Enterprise or a SMALL Enterprise <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 font-semibold mt-1">
+                                <label class="radio-label"><input type="radio" required name="mse_radio" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="mse_radio" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Upload Udyam Registration as manufacturers of similar item/category (or as service providers for similar services) <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="udyam_registration_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="border-top mt-4 pt-3">
+                        <label class="field-label mb-2">1 (i) TURNOVER of the Company in last 3 years (in Rs Crores): Audited Balance Sheet to be provided. In case of JV/Consortium details of all the partners are to be submitted <span class="required-star">*</span></label>
+                        <div class="grid-3 gap-3">
+                            <div class="space-y-1">
+                                <span class="turnover-year-title">2025-26: <span class="required-star">*</span></span>
+                                <input name="turnover_2025_26" type="number" required step="0.01" placeholder="Enter amount" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="balance_sheet_2025_26_file" type="file" required class="file-hidden" accept=".pdf">
+                                    <span class="upload-title"><i class="fa-solid fa-file-pdf"></i> Upload File</span>
+                                    <span class="upload-sub">Audited Balance Sheet (PDF Only, Max 2MB)</span>
+                                </label>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="turnover-year-title">2024-25: <span class="required-star">*</span></span>
+                                <input name="turnover_2024_25" type="number" required step="0.01" placeholder="Enter amount" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="balance_sheet_2024_25_file" type="file" required class="file-hidden" accept=".pdf">
+                                    <span class="upload-title"><i class="fa-solid fa-file-pdf"></i> Upload File</span>
+                                    <span class="upload-sub">Audited Balance Sheet (PDF Only, Max 2MB)</span>
+                                </label>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="turnover-year-title">2023-24: <span class="required-star">*</span></span>
+                                <input name="turnover_2023_24" type="number" required step="0.01" placeholder="Enter amount" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="balance_sheet_2023_24_file" type="file" required class="file-hidden" accept=".pdf">
+                                    <span class="upload-title"><i class="fa-solid fa-file-pdf"></i> Upload File</span>
+                                    <span class="upload-sub">Audited Balance Sheet (PDF Only, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-top mt-4 pt-3 flex-row align-start gap-2">
+                        <input name="confirm_not_split_entity" type="checkbox" required id="c1j" class="checkbox-custom">
+                        <label for="c1j" class="checkbox-text-label">1(j) Confirm that company / entity has not been formed by splitting up or reconstruction of a business already in existence <span class="required-star">*</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-2">
+                <div onclick="toggleSection(2)" class="section-header">
+                    <span>2. BRIEF DETAILS OF THE PRODUCT/SOFTWARE/SOLUTION PROPOSED FOR INNOVATION</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-2"></i>
+                </div>
+                <div class="accordion-content p-5 hidden-section" id="content-2">
+                    <div>
+                        <label class="field-label">2(a) Problem Statement i.e. the problem which is likely to be solved by the proposed product/software/ solution <span class="required-star">*</span></label>
+                        <textarea name="problem_statement" rows="2" required placeholder="Describe core problem statement" class="form-input textarea-no-resize"></textarea>
+                    </div>
+                    <div class="grid-2 mt-3">
+                        <div>
+                            <label class="field-label">2(b) Please describe the product proposed to be developed i.e. the solution/product/software solution proposed; Technology being used; Hardware- Software details <span class="required-star">*</span></label>
+                            <textarea name="product_description_tech_details" rows="5" required placeholder="Describe technology, hardware and software details..." class="form-input textarea-no-resize"></textarea>
+                        </div>
+                        <div>
+                            <label class="field-label">Upload details or presentation of the proposed solution and the way it is proposed to go about it. <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box" style="height: 110px;">
+                                <input name="proposed_solution_deck_file" type="file" required class="file-hidden" accept=".pdf,.pptx,.ppt">
+                                <span class="upload-title"><i class="fa-solid fa-file-powerpoint"></i> Upload File</span>
+                                <span class="upload-sub">Presentation/Details (PDF, PPTX allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <label class="field-label">Also please provide a link to short video demo/slide deck with photos describing your product/service <span class="required-star">*</span></label>
+                        <input name="video_demo_link" type="url" required placeholder="Provide video/drive link URL" class="form-input">
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">2(c) Details about Technology Involved (Literature available, prototype under development, working prototype, product in development phase) <span class="required-star">*</span></label>
+                            <input name="technology_involved_details" type="text" required placeholder="Enter details about technology involved" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload relevant documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="technology_relevant_docs_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">PDF, JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">2(d) What is the current status of your product/service? (idea without validation, Idea with some assumption, Demonstrable technology, product with customer validation, Revenue generating) <span class="required-star">*</span></label>
+                            <select name="current_product_status" required class="form-input text-slate">
+                                <option value="">Select Option</option>
+                                <option>idea without validation</option><option>Idea with some assumption</option><option>Demonstrable technology</option><option>product with customer validation</option><option>Revenue generating</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">2(e) Do you have intellectual property right (IPR) of your own covering your product concept? If then what is it? Do you have freedom to operate (with respect to intellectual property) in India? <span class="required-star">*</span></label>
+                            <div class="grid-2">
+                                <input name="ipr_details" type="text" required placeholder="Enter details about IPR status" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="ipr_relevant_document_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">Upload relevant document if applicable (PDF, JPG, PNG, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">2 (f) Any Reference Standard for product validation <span class="required-star">*</span></label>
+                            <div class="grid-2">
+                                <input name="reference_standard_details" type="text" required placeholder="Enter reference standard details" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="reference_standard_doc_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">Upload relevant document if applicable (PDF, JPG, PNG, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">2(g) Testing Facility/Infrastructure required for testing and validation <span class="required-star">*</span></label>
+                            <div class="grid-2">
+                                <input name="testing_facility_details" type="text" required placeholder="Enter facility requirements" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="testing_facility_doc_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">Upload relevant document if applicable (PDF, JPG, PNG, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">2(h) Support required from DMRC <span class="required-star">*</span></label>
+                            <input name="support_required_from_dmrc" type="text" required placeholder="Enter support details from DMRC" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">2(j) Who will use and pay for the product/service/solution proposed to be developed? <span class="required-star">*</span></label>
+                            <input name="intended_user_and_payer" type="text" required placeholder="Enter target user details" class="form-input">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="field-label">2(i) Benefits that would accrue to DMRC in terms of reduction of cost of Maintenance, System Reliability, Productivity improvement, Optimisation of manpower etc. <span class="required-star">*</span></label>
+                        <textarea name="benefits_to_dmrc" rows="2" required placeholder="List explicit benefits metrics..." class="form-input textarea-no-resize"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-3">
+                <div onclick="toggleSection(3)" class="section-header">
+                    <span>3. INFORMATION ABOUT FOUNDERS OF COMPANY</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-3"></i>
+                </div>
+                <div class="accordion-content p-5 space-y-4 hidden-section" id="content-3">
+                    <label class="field-label font-bold">3(a) Details about the founders and their share in the company (Add more rows if needed):</label>
+                    <div class="space-y-3" id="founders-container">
+                        <div class="founder-card">
+                            <span class="founder-card-title">Founder Member #1</span>
+                            <div class="grid-3 gap-3">
+                                <div>
+                                    <label class="field-label">Name of the founder <span class="required-star">*</span></label>
+                                    <input name="founder1_name" type="text" required placeholder="Name" class="form-input bg-white">
+                                </div>
+                                <div>
+                                    <label class="field-label">Nationality <span class="required-star">*</span></label>
+                                    <input name="founder1_nationality" type="text" required placeholder="Nationality" class="form-input bg-white">
+                                </div>
+                                <div>
+                                    <label class="field-label">Shareholding of each founder percentage <span class="required-star">*</span></label>
+                                    <div class="grid-2 gap-1">
+                                        <input name="founder1_shareholding_percentage" type="number" required placeholder="%" class="form-input bg-white">
+                                        <label class="upload-dashed-box bg-white">
+                                            <input name="founder1_shareholding_doc_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                            <span class="upload-title-mini"><i class="fa-solid fa-cloud-arrow-up"></i> Upload document for shareholding</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-3 gap-3 mt-2">
+                                <div>
+                                    <label class="field-label">Linkedin profile/ URL/email id of founder <span class="required-star">*</span></label>
+                                    <input name="founder1_linkedin_url_email" type="text" required placeholder="URL/Email" class="form-input bg-white">
+                                </div>
+                                <div>
+                                    <label class="field-label">Mobile No <span class="required-star">*</span></label>
+                                    <input name="founder1_mobile_no" type="tel" required placeholder="Mobile" class="form-input bg-white">
+                                </div>
+                                <div>
+                                    <label class="field-label">Identity Proof of each Founder (Aadhar/ PAN/Voter ID Card) <span class="required-star">*</span></label>
+                                    <div class="grid-2 gap-1">
+                                        <input name="founder1_identity_proof_type" type="text" required placeholder="Type" class="form-input bg-white">
+                                        <label class="upload-dashed-box bg-white">
+                                            <input name="founder1_id_proof_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                            <span class="upload-title-mini"><i class="fa-solid fa-cloud-arrow-up"></i> Upload document</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <label class="field-label">Address of founder member <span class="required-star">*</span></label>
+                                <input name="founder1_address" type="text" required placeholder="Address details" class="form-input bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="addFounderRow()" class="btn-add-more">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Add More Founder</span>
+                    </button>
+
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">3(b) How long have the founders known one another? How did they come together? <span class="required-star">*</span></label>
+                            <input name="founders_relationship_duration_background" type="text" required placeholder="Describe interaction history" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">3(c) Is there a founder's agreement in place? If Yes Upload founder's agreement copy <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 font-semibold mt-1 mb-2">
+                                <label class="radio-label"><input type="radio" required name="founders_agreement_radio" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="founders_agreement_radio" value="No"><span>No</span></label>
+                            </div>
+                            <label class="upload-dashed-box">
+                                <input name="founders_agreement_file" type="file" class="file-hidden" accept=".pdf">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">If Yes Upload founder's agreement copy (PDF Only, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="field-label">3(d) What are the domains of expertise of the team members? <span class="required-star">*</span></label>
+                        <input name="team_domains_of_expertise" type="text" required placeholder="List technical domains expertise" class="form-input">
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3 flex-align-center">
+                        <div>
+                            <label class="field-label">3(e) Are there any pending criminal cases against Company or any of it's founders? If yes, provide details If No Upload declaration signed by authorised signatory <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="crim" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="crim" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <label class="upload-dashed-box">
+                            <input name="criminal_no_case_declaration_file" type="file" required class="file-hidden" accept=".pdf">
+                            <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                            <span class="upload-sub">If yes provide details / If No Upload declaration signed by authorised signatory (PDF Only, Max 2MB)</span>
+                        </label>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3 flex-align-center">
+                        <div>
+                            <label class="field-label">3(f) Is the Company or any of it's founders blacklisted in the last 3 years by any Government Department, State government, any PSU or government authority, any incubation center/knowledge center in India or abroad? If yes please provide details. If No Upload declaration signed by authorised signatory <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="blist" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="blist" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <label class="upload-dashed-box">
+                            <input name="blacklisted_docs_or_declaration_file" type="file" required class="file-hidden" accept=".pdf">
+                            <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                            <span class="upload-sub">If yes please upload documents for the details provided / If No Upload declaration signed by authorised signatory (PDF Only, Max 2MB)</span>
+                        </label>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3 flex-align-center">
+                        <div>
+                            <label class="field-label">3(g) Details of the pending Litigations/Arbitration with any Government Department, State government, any PSU or government authority, any incubation center/knowledge center in India or abroad in the last 3 years? If yes please provide details. If No Upload declaration signed by authorised signatory <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="lit" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="lit" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <label class="upload-dashed-box">
+                            <input name="litigation_docs_or_declaration_file" type="file" required class="file-hidden" accept=".pdf">
+                            <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                            <span class="upload-sub">If yes please upload documents for details / If No Upload declaration signed by authorised signatory (PDF Only, Max 2MB)</span>
+                        </label>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3 flex-align-center">
+                        <div>
+                            <label class="field-label">3(h) Has the firm been declared a Financial Defaulter, Bankrupt or insolvent by any Financial Institution/ Regulatory/Legal/Quasi Legal entity? If No Upload declaration signed by authorised signatory <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="bankrupt" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="bankrupt" value="No"><span>No</span></label>
+                            </div>
+                        </div>
+                        <label class="upload-dashed-box">
+                            <input name="financial_defaulter_declaration_file" type="file" required class="file-hidden" accept=".pdf">
+                            <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                            <span class="upload-sub">If No Upload declaration signed by authorised signatory (PDF Only, Max 2MB)</span>
+                        </label>
+                    </div>
+
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">3(i) Are any of the founders current or former employees of DMRC or any of its related entities? If Yes please provide details <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="dmrc_emp" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="dmrc_emp" value="No"><span>No</span></label>
+                            </div>
+                            <input name="dmrc_employee_founder_details" type="text" placeholder="If Yes please provide details" class="form-input mt-2">
+                        </div>
+                        <div>
+                            <label class="field-label">3(j) Are any of the founders related to any current or former employees of DMRC or any of its related entities. If yes, details of such employee of DMRC may be provided. If Yes please provide details <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mt-1 font-semibold">
+                                <label class="radio-label"><input type="radio" required name="dmrc_rel" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="dmrc_rel" value="No"><span>No</span></label>
+                            </div>
+                            <input name="dmrc_related_employee_details" type="text" placeholder="If Yes please provide details" class="form-input mt-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-4">
+                <div onclick="toggleSection(4)" class="section-header">
+                    <span>4. COMPANY CREDENTIALS; PAST EXPERIENCE</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-4"></i>
+                </div>
+                <div class="accordion-content p-5 hidden-section" id="content-4">
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label">4(a) Details of at least 3 performance certificates of end clients for establishing domain expertise in the similar product/category? <span class="required-star">*</span></label>
+                            <input name="performance_certificates_details" type="text" required placeholder="Enter certificates references details" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="performance_certificates_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">4(b) Manufacturing Capability of the offered product? <span class="required-star">*</span></label>
+                            <input name="manufacturing_capability_details" type="text" required placeholder="Enter manufacturing capabilities description" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="manufacturing_capability_docs_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">4(c) Details of the Certifications achieved by firm with reference to the product quality? <span class="required-star">*</span></label>
+                            <input name="product_quality_certifications_details" type="text" required placeholder="Enter details of certifications achieved" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload Valid Certifications, is any. <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="product_quality_certs_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload Valid Certifications, is any (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">4(d) Details of the Certifications/Validations received in regard to the product/solution proposed (or similar product/solution) ? <span class="required-star">*</span></label>
+                            <input name="proposed_product_validations_details" type="text" required placeholder="Enter certifications validations received" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload Valid Certifications/ Validations, is any. <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="proposed_product_validations_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload Valid Certifications/ Validations, is any (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">4(e) Manpower Details: Details of the Company Organisation Chart mentioning the CV, Qualification and contact details of Key Innovators and key personnel on board? <span class="required-star">*</span></label>
+                            <input name="organisation_chart_details" type="text" required placeholder="Enter organizational strength layout" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="organisation_chart_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">4(f) After Sales Support; Details of the Service support organisation to be submitted? <span class="required-star">*</span></label>
+                            <input name="after_sales_support_details" type="text" required placeholder="Enter support workflow layout details" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="after_sales_support_docs_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-5">
+                <div onclick="toggleSection(5)" class="section-header">
+                    <span>5. PROJECT COST DETAILS.</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-5"></i>
+                </div>
+                <div class="accordion-content p-5 space-y-4 hidden-section" id="content-5">
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label">5(a) Detailed breakup of cost required to be incurred for completing the project and cost proposed to be borne by DMRC? <span class="required-star">*</span></label>
+                            <input name="project_cost_detailed_breakup" type="text" required placeholder="Enter total project billing split architecture" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="project_cost_detailed_breakup_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">5(b) Does the applicant seeks any Seed Funding from DMRC? If yes the amount of seed funding and its quantum in the overall project cost must be clearly mentioned with details as to how this seed fund will be utilised (It may be noted that Seed funding by DMRC shall be limited upto 50% of project cost subject to ceiling of Rs 1.5 Cr per project (can be raised to Rs 2.5 Cr in exceptional cases in later stages depending on status and progress of development project and its future development). It may also be noted that Development Cost payable on reimbursement basis and for which applicant must periodically submit CA certified expenditure in which the overheads limit shall be only upto 15%) <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mb-2 font-semibold mt-1">
+                                <label class="radio-label"><input type="radio" required name="seed_f" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="seed_f" value="No"><span>No</span></label>
+                            </div>
+                            <input name="seed_funding_quantum_details" type="number" placeholder="Requested seed funding quantum layout (INR in Lakhs)" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">5(c) If applicant has sought any seed funding does he also seek and Mobilisation Advance from DMRC? (For seed funded projects, in addition to the committed seed capital, an interest bearing mobilisation advance up to 20% of the project cost (subject to a maximum of Rs. 1 CR for each project) can be given by DMRC on MCLR rates plus 2% subject to submission of BG in two stages of 10% each for the advance amount from a scheduled bank. The 1st instalment of 10% amount can be disbursed on submission of BG for the amount. The 2nd instalment of 10% of mobilisation advance shall be released on submission of proof of expenditure duly certified by CA. This amount shall be required to be returned to DMRC within one year of issue of the advance amount) <span class="required-star">*</span></label>
+                            <div class="flex-row gap-4 mb-2 font-semibold mt-1">
+                                <label class="radio-label"><input type="radio" required name="mob_adv" value="Yes"><span>Yes</span></label>
+                                <label class="radio-label"><input type="radio" required name="mob_adv" value="No"><span>No</span></label>
+                            </div>
+                            <input name="mobilisation_advance_amount" type="number" placeholder="Enter mobilization advance amount requested (INR in Lakhs)" class="form-input">
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">5(d) Details regarding business potential of the product proposed to be developed and business plan of the firm regarding ROI? <span class="required-star">*</span></label>
+                            <input name="business_potential_roi_plan" type="text" required placeholder="Enter business plan ROI parameters" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="business_potential_roi_docs_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">5(e) Details of Existing Investors, nature and period of their investments and their percentage shareholding? <span class="required-star">*</span></label>
+                            <input name="existing_investors_details" type="text" required placeholder="Enter investor equity cap details" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="existing_investors_details_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid-3 gap-3 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">5(f) How much money have you raised from external investors till date, if any? (INR in Lakhs) <span class="required-star">*</span></label>
+                            <input name="external_funds_raised_inr_lakhs" type="number" required placeholder="INR in Lakhs" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">5(g) Briefly describe the market for your product, trend and size and what market price do you intend to keep for your product. <span class="required-star">*</span></label>
+                            <input name="market_trend_size_and_price" type="text" required placeholder="Enter market parameters layout" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">5(i) Who are your competitors, how are you different and what competitive advantage you expect to have vis-a-vis your competitors and who might be a potential competitor? <span class="required-star">*</span></label>
+                            <input name="competitors_differentiation_advantage" type="text" required placeholder="Enter USP competitive details" class="form-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-6">
+                <div onclick="toggleSection(6)" class="section-header">
+                    <span>6. TIME DURATION OF THE PROJECT COST DETAILS.</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-6"></i>
+                </div>
+                <div class="accordion-content p-5 hidden-section" id="content-6">
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label">6(a) Time line of the project from the date of issuance of letter of approval/acceptance of Innovation Proposal by DMRC. The time line should clearly show the breakup of key milestones and their individual time limits. <span class="required-star">*</span></label>
+                            <input name="project_milestones_timeline" type="text" required placeholder="Enter duration setup details" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Upload documents <span class="required-star">*</span></label>
+                            <label class="upload-dashed-box">
+                                <input name="project_milestones_timeline_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="upload-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-7">
+                <div onclick="toggleSection(7)" class="section-header">
+                    <span>7. ADDITIONAL DETAILS/DOCUMENTS NEEDED FROM APPLICANTS WHO ARE START-UPS </span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-7"></i>
+                </div>
+                <div class="accordion-content p-5 hidden-section" id="content-7">
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label">7(a) Briefly describe sector on which your idea/ startup belong to <span class="required-star">*</span></label>
+                            <input name="startup_sector_domain" type="text" required placeholder="e.g. AI, Transit Infrastructure" class="form-input">
+                        </div>
+                        <div>
+                            <label class="field-label">7(b) Why did you choose this idea? What is the need you are addressing for your end user? <span class="required-star">*</span></label>
+                            <input name="startup_idea_reason_and_user_need" type="text" required placeholder="Enter concept validation notes" class="form-input">
+                        </div>
+                    </div>
+                    <div class="grid-2 border-top mt-4 pt-3">
+                        <div>
+                            <label class="field-label">7(c) Details about composition of Startup. <span class="required-star">*</span></label>
+                            <div class="grid-2">
+                                <input name="startup_composition_details" type="text" required placeholder="Explain internal alignment" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="startup_composition_registration_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title-small"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">Registration documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">7(d) Credentials of Founders/CEO/Technical Head Details about composition of Startup. CV, affiliations to technical bodies and professional credentials to be uploaded <span class="required-star">*</span></label>
+                            <div class="grid-2">
+                                <input name="founders_ceo_techhead_credentials" type="text" required placeholder="Enter summary professional profile details" class="form-input">
+                                <label class="upload-dashed-box">
+                                    <input name="founders_ceo_techhead_cv_file" type="file" required class="file-hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                    <span class="upload-title-small"><i class="fa-solid fa-cloud-arrow-up"></i> Upload File</span>
+                                    <span class="upload-sub">Upload documents (PDF, JPG, PNG allowed, Max 2MB)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="sec-8">
+                <div onclick="toggleSection(8)" class="section-header">
+                    <span>8. PREPARE A DETAILED PRESENTATION COVERING FOLLOWING ASPECTS AND UPLOAD THE SAME</span>
+                    <i class="fa-solid fa-chevron-right" id="arrow-8"></i>
+                </div>
+                <div class="accordion-content p-5 hidden-section" id="content-8">
+                    <div class="grid-12 gap-4 flex-align-center">
+                        <div class="col-span-8 text-slate space-y-1 text-justified">
+                            <p class="font-bold text-dark mb-1">Presentation Coverage Parameters List:</p>
+                            <p>• Detailed project report on the problem statement, product/software solution on which the innovator intends to work.</p>
+                            <p>• Credentials of applicant vis-a vis eligibility criteria as per DMRC's Innovation Policy.</p>
+                            <p>• Application to be accompanied by documents as per Annexure-A of policy (DMRC's Innovation Policy & Annexure A available on website)</p>
+                            <p>• Project financing details for development of the product including the requirement and quantum of Seed funding sought by vendor, if any.</p>
+                            <p>• Business potential etc.</p>
+                        </div>
+                        <div class="col-span-4">
+                            <label class="upload-dashed-box p-4 bg-slate" style="height: 110px;">
+                                <input name="detailed_pitch_deck_presentation_file" type="file" required class="file-hidden" accept=".pptx,.ppt,.pdf">
+                                <i class="fa-solid fa-file-powerpoint text-red text-lg mb-1"></i>
+                                <span class="upload-title">Upload detailed presentation</span>
+                                <span class="upload-sub">Presentation Only (PPTX, PPT, PDF format, Max 2MB)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="declaration-panel">
+    
+    <h4 class="declaration-title">
+     DECLARATION
+    </h4>
+
+            <div class="declaration-checkbox-row">
+    <input type="checkbox" required name="applicant_confirm_and_submit_declaration" id="declaration_check" class="checkbox-custom">
+    <label for="declaration_check" class="checkbox-text-label">
+       I confirm that the company / entity has not been formed by splitting up or reconstruction of a business already in existence, and I certify that the details/documents given above are true to my knowledge. I have submitted the proposal in line with DMRC's Innovation Policy. In case if any information provided by me is not found correct I shall be liable for suitable penal action by DMRC (in addition to cancellation of my innovation proposal/innovation project). <span class="required-star">*</span>
+    </label>
+</div>
+                <div class="submit-row">
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Confirm and submit</span>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- 🎯 CHATBOT FOR FAQ HELP -->
+    <div id="faq-chatbot-widget">
+        <button type="button" id="faq-chatbot-toggle" onclick="toggleFaqChatbot()" title="Need help?">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+        <div id="faq-chatbot-panel">
+            <div id="faq-chatbot-header">
+                <span><i class="fa-solid fa-headset"></i> DMRC Help Assistant</span>
+                <span id="faq-chatbot-close" onclick="toggleFaqChatbot()">&times;</span>
+            </div>
+            <div id="faq-chatbot-messages"></div>
+            <div id="faq-chatbot-quick-questions"></div>
+            <form id="faq-chatbot-input-row" onsubmit="return handleFaqChatbotSubmit(event)">
+                <input type="text" id="faq-chatbot-input" placeholder="Ask a question...">
+                <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        #faq-chatbot-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9998; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #faq-chatbot-toggle { width: 56px; height: 56px; border-radius: 50%; background: #1e3a8a; color: #fff; border: none; font-size: 22px; cursor: pointer; box-shadow: 0 6px 16px rgba(30,58,138,0.35); }
+        #faq-chatbot-toggle:hover { background: #13255c; }
+        #faq-chatbot-panel { display: none; position: absolute; bottom: 68px; right: 0; width: 320px; max-height: 440px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; flex-direction: column; }
+        #faq-chatbot-panel.open { display: flex; }
+        #faq-chatbot-header { background: #1e3a8a; color: #fff; padding: 12px 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        #faq-chatbot-close { cursor: pointer; font-size: 20px; line-height: 1; }
+        #faq-chatbot-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; max-height: 230px; background: #f8fafc; }
+        .faq-msg { padding: 8px 12px; border-radius: 10px; font-size: 13px; line-height: 1.4; max-width: 85%; }
+        .faq-msg.bot { background: #e2e8f0; color: #1e293b; align-self: flex-start; }
+        .faq-msg.user { background: #1e3a8a; color: #fff; align-self: flex-end; }
+        #faq-chatbot-quick-questions { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; border-top: 1px solid #e2e8f0; }
+        .faq-quick-btn { background: #eef2ff; color: #1e3a8a; border: 1px solid #c7d2fe; border-radius: 14px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+        .faq-quick-btn:hover { background: #e0e7ff; }
+        #faq-chatbot-input-row { display: flex; border-top: 1px solid #e2e8f0; }
+        #faq-chatbot-input { flex: 1; border: none; padding: 10px 12px; font-size: 13px; outline: none; }
+        #faq-chatbot-input-row button { background: #1e3a8a; color: #fff; border: none; width: 44px; cursor: pointer; }
+        #faq-chatbot-input-row button:hover { background: #13255c; }
+    </style>
+
+    <!-- 🎯 SUCCESS CONFIRMATION SCREEN — shown in place of the toast after a successful submit -->
+    <!-- 🎯 SUCCESS CONFIRMATION SCREEN — full-page, shown in place of the toast after a successful submit -->
+    <div id="submission-success-screen">
+        <div class="success-page-inner">
+            <img src="DMRC logo.png" alt="DMRC Logo" class="success-logo">
+            <div class="success-check-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h1>Application Submitted Successfully</h1>
+            <p class="success-subtext">Your innovation proposal has been received by Delhi Metro Rail Corporation Ltd. and is now under review by our team.</p>
+            <div class="success-id-box">
+                <span class="success-id-label">Application ID</span>
+                <span class="success-id-value" id="success-application-id">DMRC-XXXXXXXX</span>
+            </div>
+            <p class="success-note">A confirmation email with this Application ID has been sent to your registered email address. Please keep it safe for future reference.</p>
+            <button type="button" class="success-close-btn" onclick="closeSuccessScreen()">
+                <i class="fa-solid fa-arrow-left"></i> Back to Form
+            </button>
+        </div>
+    </div>
+
+    <style>
+        #submission-success-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #ffffff;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        #submission-success-screen.active { display: flex; }
+        .success-page-inner {
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .success-logo { height: 48px; margin-bottom: 28px; }
+        .success-check-circle {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: #16a34a;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 26px auto;
+            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.25);
+        }
+        .success-page-inner h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 12px 0;
+        }
+        .success-subtext {
+            font-size: 14.5px;
+            color: #64748b;
+            line-height: 1.6;
+            margin: 0 0 28px 0;
+        }
+        .success-id-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+            padding: 16px 24px;
+            margin-bottom: 22px;
+            display: inline-block;
+        }
+        .success-id-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #475569;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .success-id-value {
+            display: block;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e3a8a;
+            letter-spacing: 0.5px;
+        }
+        .success-note {
+            font-size: 12.5px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin: 0 0 30px 0;
+        }
+        .success-close-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e3a8a;
+            color: #fff;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .success-close-btn:hover { background: #16307a; }
+    </style>
+
+    <script>
+        // 🎯 Sidebar sticky offset — measures the real rendered height of .main-header
+        // and exposes it as --dmrc-header-h so the sidebar (in style.css) locks
+        // exactly at the header's bottom edge with no visible "scroll then stick" jump.
+        function syncHeaderHeightVar() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                document.documentElement.style.setProperty('--dmrc-header-h', header.offsetHeight + 'px');
+            }
+        }
+        window.addEventListener('load', syncHeaderHeightVar);
+        window.addEventListener('resize', syncHeaderHeightVar);
+        document.addEventListener('DOMContentLoaded', syncHeaderHeightVar);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMRC Administrative Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+    <link rel ="icon" href ="DMRC logo.png" type="image/png">
+
+    <style>
+        /* =========================================================================
+           🎨 DMRC ADMIN GATEWAY — Interchange-Station Themed Split Layout
+           Signature: a vertical metro "line map" — every colored line on the network
+           converging into one glowing interchange node, standing for the gateway itself.
+           ========================================================================= */
+        :root {
+            --navy-deep: #050f2b;
+            --navy: #0a2159;
+            --navy-brand: #002060;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-soft: #94a3b8;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --admin-red: #dc2626;
+            --admin-red-deep: #b91c1c;
+            --line-red: #da251d;
+            --line-yellow: #ffc20e;
+            --line-violet: #8b3fa8;
+            --line-green: #00a651;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 12% 15%, rgba(10, 33, 89, 0.07), transparent 42%),
+                radial-gradient(circle at 88% 85%, rgba(218, 37, 29, 0.05), transparent 42%),
+                linear-gradient(160deg, #eef1f8 0%, #e3e8f2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        h1, h2, .brand-eyebrow, .primary-action-btn, .badge-restricted {
+            font-family: 'Archivo', 'Inter', sans-serif;
+        }
+
+        /* ===================== SHELL: split-panel card ===================== */
+        .portal-shell {
+            width: 100%;
+            max-width: 920px;
+            min-height: 560px;
+            background: var(--surface);
+            border-radius: 22px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px rgba(5, 15, 43, 0.25), 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        /* ===================== LEFT: brand / signature panel ===================== */
+        .brand-panel {
+            position: relative;
+            flex: 0 0 40%;
+            background:
+                radial-gradient(circle at 85% 15%, rgba(218, 37, 29, 0.16), transparent 45%),
+                linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 100%);
+            color: #ffffff;
+            padding: 40px 34px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-panel-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dmrc-logo-img {
+            width: 108px;
+            height: 108px;
+            object-fit: contain;
+            background: #ffffff;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .brand-eyebrow {
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .brand-panel-mid { margin: 32px 0 22px; }
+
+        .brand-heading {
+            font-size: 27px;
+            font-weight: 800;
+            line-height: 1.22;
+            letter-spacing: -0.3px;
+            margin-bottom: 14px;
+        }
+
+        .brand-copy {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.68);
+            max-width: 280px;
+        }
+
+        .restricted-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 22px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(218, 37, 29, 0.18);
+            border: 1px solid rgba(218, 37, 29, 0.4);
+            color: #fca5a5;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        /* Feature list — standard portal-style trust indicators */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .feature-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.82);
+        }
+
+        .brand-panel-footer {
+            margin-top: auto;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            font-size: 11.5px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* ===================== RIGHT: form panel ===================== */
+        .form-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 46px;
+        }
+
+        .form-panel-inner { width: 100%; max-width: 340px; }
+
+        .badge-restricted {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--admin-red-deep);
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.18);
+            padding: 5px 11px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .main-heading {
+            color: var(--ink);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            margin-bottom: 6px;
+        }
+
+        .sub-text {
+            font-size: 13.5px;
+            color: var(--slate);
+            margin-bottom: 26px;
+        }
+
+        /* Input Management Systems */
+        .form-group { margin-bottom: 16px; text-align: left; }
+
+        .form-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .input-box-wrapper { position: relative; display: flex; align-items: center; }
+
+        .input-box-wrapper i.prefix-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--slate-soft);
+            font-size: 14px;
+        }
+
+        .input-box-wrapper input {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            color: var(--ink);
+            background: var(--surface);
+            transition: all 0.15s ease;
+        }
+
+        .input-box-wrapper input:focus {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            color: var(--slate-soft);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .toggle-password:hover { color: var(--admin-red); }
+
+        /* Captcha */
+        .captcha-grid { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+        .captcha-input-override { padding-left: 14px !important; }
+
+        .captcha-canvas-frame {
+            background: var(--surface-alt);
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+        }
+
+        .refresh-action-btn {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            color: var(--slate);
+            cursor: pointer;
+            padding: 11px 14px;
+            border-radius: 9px;
+            transition: all 0.15s ease;
+        }
+        .refresh-action-btn:hover { background: var(--surface-alt); color: var(--admin-red); border-color: rgba(220,38,38,0.3); }
+
+        /* Primary button */
+        .primary-action-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--admin-red) 0%, #a51c1c 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 9px;
+            font-size: 14.5px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            margin-top: 14px;
+            box-shadow: 0 8px 18px -6px rgba(220, 38, 38, 0.45);
+        }
+        .primary-action-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -6px rgba(220, 38, 38, 0.55); }
+        .primary-action-btn:active { transform: translateY(0); }
+
+        input::-ms-reveal, input::-ms-clear { display: none !important; }
+        input::-webkit-contacts-auto-fill-button, input::-webkit-credentials-auto-fill-button {
+            display: none !important; visibility: hidden !important; pointer-events: none !important;
+        }
+
+        /* ===================== Responsive ===================== */
+        @media (max-width: 860px) {
+            .portal-shell { flex-direction: column; max-width: 460px; min-height: unset; }
+            .brand-panel { flex: none; padding: 26px 30px; flex-direction: row; align-items: center; justify-content: space-between; }
+            .brand-panel-mid { margin: 0; }
+            .brand-heading { font-size: 19px; margin-bottom: 6px; }
+            .brand-copy { display: none; }
+            .restricted-chip { margin-top: 10px; }
+            .feature-list { display: none; }
+            .brand-panel-footer { display: none; }
+            .form-panel { padding: 34px 28px; }
+        }
+
+        /* =========================================================================
+           🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+           ========================================================================= */
+        .toast-container {
+            position: fixed; top: 24px; right: 24px; z-index: 99999;
+            display: flex; flex-direction: column; gap: 12px; pointer-events: none;
+        }
+        .toast {
+            min-width: 320px; max-width: 400px; background: #ffffff; border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 32, 96, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 16px 18px; display: flex; align-items: flex-start; gap: 12px;
+            pointer-events: auto; border-left: 4px solid var(--navy-brand);
+            position: relative; overflow: hidden; transform: translateX(130%); opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.hide { transform: translateX(130%); opacity: 0; }
+        .toast-icon-wrap {
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0; font-size: 15px;
+            background: rgba(0, 32, 96, 0.08); color: var(--navy-brand);
+        }
+        .toast-content { flex: 1; padding-top: 1px; }
+        .toast-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+        .toast-message { font-size: 12.5px; color: var(--slate); line-height: 1.45; }
+        .toast-close {
+            cursor: pointer; color: var(--slate-soft); font-size: 13px; flex-shrink: 0;
+            background: none; border: none; padding: 4px; border-radius: 50%; transition: all 0.15s ease;
+        }
+        .toast-close:hover { color: #1e293b; background: #f1f5f9; }
+        .toast-progress {
+            position: absolute; bottom: 0; left: 0; height: 3px; width: 100%;
+            background: rgba(0, 32, 96, 0.3); transform-origin: left; animation: toast-shrink linear forwards;
+        }
+        @keyframes toast-shrink { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+        .toast.success { border-left-color: #16a34a; }
+        .toast.success .toast-icon-wrap { background: rgba(22, 163, 74, 0.1); color: #16a34a; }
+        .toast.success .toast-progress { background: rgba(22, 163, 74, 0.35); }
+        .toast.error { border-left-color: #dc2626; }
+        .toast.error .toast-icon-wrap { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+        .toast.error .toast-progress { background: rgba(220, 38, 38, 0.35); }
+        .toast.warning { border-left-color: #d97706; }
+        .toast.warning .toast-icon-wrap { background: rgba(217, 119, 6, 0.1); color: #d97706; }
+        .toast.warning .toast-progress { background: rgba(217, 119, 6, 0.35); }
+        .toast.info { border-left-color: var(--navy-brand); }
+    </style>
+</head>
+<body>
+
+<div class="portal-shell">
+
+    <div class="brand-panel">
+        <div class="brand-panel-top">
+            <img src="DMRC logo.png" alt="DMRC Logo" class="dmrc-logo-img">
+        </div>
+
+        <div class="brand-panel-mid">
+            <h2 class="brand-heading">Administrative<br>Secure Gateway</h2>
+            <p class="brand-copy">Restricted sign-in for authorised DMRC personnel to review, evaluate and manage innovation proposals submitted through the portal.</p>
+            <div class="restricted-chip"><i class="fa-solid fa-shield-halved"></i> Authorised personnel only</div>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
+                <div class="feature-text">Encrypted, secure sign-in</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="feature-text">Captcha-verified access</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="feature-text">Fast, single-step access</div>
+            </div>
+        </div>
+
+        <div class="brand-panel-footer">DMRC Innovation Portal &copy; 2026</div>
+    </div>
+
+    <div class="form-panel">
+        <div class="form-panel-inner">
+            <span class="badge-restricted"><i class="fa-solid fa-lock"></i> Restricted Access</span>
+            <h1 class="main-heading">Admin Login</h1>
+            <div class="sub-text">Sign in with your administrative credentials</div>
+
+            <form id="admin-gateway-form">
+
+                <div class="form-group">
+                    <label>Admin Username</label>
+                    <div class="input-box-wrapper">
+                        <i class="fa-solid fa-user prefix-icon"></i>
+                        <input type="text" id="username" required placeholder="Enter username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email ID</label>
+                    <div class="input-box-wrapper">
+                        <i class="fa-solid fa-envelope prefix-icon"></i>
+                        <input type="email" id="email" required placeholder="Enter registered email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-box-wrapper">
+                        <i class="fa-solid fa-lock prefix-icon"></i>
+                        <input type="password" id="password" required placeholder="Enter password">
+                        <i class="fa-solid fa-eye toggle-password" onclick="togglePasswordVisibility()"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Captcha</label>
+                    <div class="input-box-wrapper">
+                        <input type="text" id="captcha-input" class="captcha-input-override" required placeholder="Enter captcha" style="padding-left: 14px;">
+                    </div>
+                    <div class="captcha-grid">
+                        <canvas id="captcha-canvas" class="captcha-canvas-frame" width="160" height="42"></canvas>
+                        <button type="button" class="refresh-action-btn" onclick="generateSecureCaptcha()" title="Refresh Captcha">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-action-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 🎯 TOAST NOTIFICATION ENGINE
+    function showToast(message, type = 'info', title = null, duration = 4500) {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
+
+        const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+        const titles = { success: 'Success', error: 'Error', warning: 'Warning', info: 'Notice' };
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div class="toast-icon-wrap"><i class="fa-solid ${icons[type] || icons.info}"></i></div>
+            <div class="toast-content">
+                <div class="toast-title">${title || titles[type] || titles.info}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button type="button" class="toast-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="toast-progress" style="animation-duration:${duration}ms;"></div>
+        `;
+
+        container.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+
+        const dismiss = () => {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            setTimeout(() => toast.remove(), 350);
+        };
+
+        const timer = setTimeout(dismiss, duration);
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            clearTimeout(timer);
+            dismiss();
+        });
+    }
+
+    let runtimeCaptchaCode = '';
+
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const icon = document.querySelector('.toggle-password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    function generateSecureCaptcha() {
+        const canvas = document.getElementById('captcha-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const stringPool = '23456789abcdefghkmnpqrstuvwxyzABCDEFGHKMNPQRSTUVWXYZ';
+        let generatedToken = '';
+        for (let i = 0; i < 5; i++) {
+            generatedToken += stringPool[Math.floor(Math.random() * stringPool.length)];
+        }
+        runtimeCaptchaCode = generatedToken;
+
+        // Background line noise
+        for (let i = 0; i < 5; i++) {
+            ctx.strokeStyle = `rgba(${Math.floor(Math.random()*100)}, ${Math.floor(Math.random()*100)}, ${Math.floor(Math.random()*150)}, 0.25)`;
+            ctx.beginPath();
+            ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+            ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+            ctx.lineWidth = Math.random() * 1.5 + 1;
+            ctx.stroke();
+        }
+
+        // Anti-OCR Dot Matrix Noise
+        for (let i = 0; i < 35; i++) {
+            ctx.fillStyle = `rgba(${Math.floor(Math.random()*130)}, ${Math.floor(Math.random()*130)}, ${Math.floor(Math.random()*180)}, 0.3)`;
+            ctx.beginPath();
+            ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 1.4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Character text distortion render
+        ctx.textBaseline = 'middle';
+        const distinctFonts = ['bold 20px Arial', 'bold 22px Calibri', 'bold 21px Verdana'];
+
+        for (let i = 0; i < generatedToken.length; i++) {
+            const singleChar = generatedToken[i];
+            ctx.font = distinctFonts[Math.floor(Math.random() * distinctFonts.length)];
+            ctx.fillStyle = `rgb(${Math.floor(Math.random()*80)}, ${Math.floor(Math.random()*60)}, ${Math.floor(Math.random()*120)})`;
+
+            const positionX = 20 + (i * 26);
+            const deviationY = 16 + Math.random() * 8;
+            const matrixRotationAngle = (Math.random() * 22 - 11) * Math.PI / 180;
+
+            ctx.save();
+            ctx.translate(positionX, deviationY);
+            ctx.rotate(matrixRotationAngle);
+            ctx.fillText(singleChar, 0, 0);
+            ctx.restore();
+        }
+
+        document.getElementById('captcha-input').value = '';
+    }
+
+    document.getElementById('admin-gateway-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Cross match captcha strings before firing API request
+        const inputCaptchaValue = document.getElementById('captcha-input').value.trim();
+        if (inputCaptchaValue !== runtimeCaptchaCode) {
+            showToast("Invalid captcha code. Please try again.", "error");
+            generateSecureCaptcha();
+            return;
+        }
+
+        const packageData = {
+            username: document.getElementById('username').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value
+        };
+
+        // Fire direct admin verification route
+        fetch('http://localhost:5000/api/admin-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(packageData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+               showToast("Login successful. Redirecting...", "success", "Welcome");
+                // 🎯 JWT AUTHENTICATION — store the token so view.html can send it on admin API calls
+                if (data.token) localStorage.setItem('dmrc_admin_token', data.token);
+                // 🎯 FIXED REDIRECTION: Relative local path routing lock for view.html
+                setTimeout(() => { window.location.href = 'view.html'; }, 900);
+            } else {
+                let errorMsg = data.message;
+                if (data.attemptsLeft !== undefined && data.attemptsLeft > 0) {
+                    errorMsg += ` (${data.attemptsLeft} attempt${data.attemptsLeft > 1 ? 's' : ''} left)`;
+                }
+                showToast(errorMsg, "error");
+                generateSecureCaptcha();
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showToast("Administrative server link down.", "error");
+        });
+    });
+
+    window.onload = function() {
+        generateSecureCaptcha();
+    };
+</script>
+</body>
+</html>

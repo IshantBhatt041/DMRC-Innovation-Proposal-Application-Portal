@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMRC Innovation Portal - Master Controller Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel ="icon" href ="DMRC logo.png" type="image/png">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .dashboard-container { max-width: 1400px; margin: 0 auto; background: #fff; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 25px; }
+        .header h2 { margin: 0; color: #1e3a8a; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        
+        .refresh-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; }
+        .refresh-btn:hover { background-color: #13255c; }
+        
+        .users-btn { background-color: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; }
+        .users-btn:hover { background-color: #13255c; }
+        
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px; }
+        th { background-color: #1e3a8a; color: white; position: sticky; top: 0; }
+        tr:hover { background-color: #f1f5f9; }
+        .badge { background: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 12px; }
+        .action-btn { background-color: #059669; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .action-btn:hover { background-color: #047857; }
+
+        /* 🎯 APPLICATION STATUS TRACKING — color-coded status dropdown */
+        .status-select { padding: 6px 10px; border-radius: 4px; font-weight: 600; font-size: 13px; border: 1px solid #cbd5e1; cursor: pointer; outline: none; }
+        .status-select.status-pending { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+        .status-select.status-under-review { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+        .status-select.status-approved { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+        .status-select.status-rejected { background: #ffe4e6; color: #9f1239; border-color: #fecdd3; }
+
+        /* 🎯 SEARCH + FILTER + PAGINATION */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+        .filter-field { display: flex; flex-direction: column; gap: 6px; }
+        .filter-field label { font-size: 12px; font-weight: 600; color: #475569; }
+        .filter-field input, .filter-field select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; min-width: 160px; outline: none; }
+        .filter-field input:focus, .filter-field select:focus { border-color: #1e3a8a; }
+        .pagination-bar { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+        .page-btn { border: 1px solid #cbd5e1; background: #fff; color: #1e3a8a; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .page-btn:hover:not(:disabled) { background: #eef2ff; }
+        .page-btn.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination-info { font-size: 13px; color: #64748b; margin-right: 10px; }
+        
+        /* === FULL DATA OVERVIEW MODAL POPUP === */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto; }
+        .modal-content { background-color: #fff; margin: 3% auto; padding: 30px; border-radius: 8px; width: 85%; max-width: 1100px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; color: #1e3a8a; }
+        .close-modal { font-size: 28px; font-weight: bold; cursor: pointer; color: #666; }
+        .close-modal:hover { color: #000; }
+        
+        /* Data grid design inside modal */
+        .section-block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-weight: 700; color: #1e3a8a; font-size: 16px; margin-top: 0; margin-bottom: 15px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px; }
+        .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .data-item { font-size: 14px; line-height: 1.5; }
+        .data-label { font-weight: 600; color: #475569; display: block; margin-bottom: 2px; }
+        .data-value { background: #fff; padding: 8px 12px; border-radius: 4px; border: 1px solid #e2e8f0; word-break: break-all; min-height: 20px; display: block; }
+        .doc-link { color: #2563eb; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .doc-link:hover { text-decoration: underline; }
+
+        /* 🎯 FIXED SYMMETRICAL INLINE INPUT MATRIX OVERRIDE WORKSPACE (IMAGE 2 REPLICA) */
+        .user-creation-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 16px; align-items: flex-end; width: 100%; }
+        .user-field-group { text-align: left; display: flex; flex-direction: column; width: 100%; }
+        .user-field-group label { display: block; font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 6px; }
+        .user-field-group input { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid #cbd5e1; border-radius: 4px; outline: none; background: #fff; height: 38px; box-sizing: border-box; transition: border-color 0.15s; }
+        .user-field-group input:focus { border-color: #1e3a8a; }
+        .user-add-btn { background-color: #1e3a8a; color: white; border: none; padding: 0 24px; height: 38px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; white-space: nowrap; }
+        .user-add-btn:hover { background-color: #13255c; }
+
+        /* =========================================================================
+           🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+           ========================================================================= */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            min-width: 320px;
+            max-width: 400px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            pointer-events: auto;
+            border-left: 4px solid #1e3a8a;
+            position: relative;
+            overflow: hidden;
+            transform: translateX(130%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        }
+
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.hide { transform: translateX(130%); opacity: 0; }
+
+        .toast-icon-wrap {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 15px;
+            background: rgba(30, 58, 138, 0.08);
+            color: #1e3a8a;
+        }
+
+        .toast-content { flex: 1; padding-top: 1px; }
+        .toast-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+        .toast-message { font-size: 12.5px; color: #475569; line-height: 1.45; }
+
+        .toast-close {
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 13px;
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.15s ease;
+        }
+        .toast-close:hover { color: #1e293b; background: #f1f5f9; }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: rgba(30, 58, 138, 0.3);
+            transform-origin: left;
+            animation: toast-shrink linear forwards;
+        }
+
+        @keyframes toast-shrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        .toast.success { border-left-color: #16a34a; }
+        .toast.success .toast-icon-wrap { background: rgba(22, 163, 74, 0.1); color: #16a34a; }
+        .toast.success .toast-progress { background: rgba(22, 163, 74, 0.35); }
+
+        .toast.error { border-left-color: #dc2626; }
+        .toast.error .toast-icon-wrap { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+        .toast.error .toast-progress { background: rgba(220, 38, 38, 0.35); }
+
+        .toast.warning { border-left-color: #d97706; }
+        .toast.warning .toast-icon-wrap { background: rgba(217, 119, 6, 0.1); color: #d97706; }
+        .toast.warning .toast-progress { background: rgba(217, 119, 6, 0.35); }
+
+        .toast.info { border-left-color: #1e3a8a; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="header">
+        <h2><i class="fa-solid fa-folder-open"></i> DMRC Master Repository - Controller View (All Form Data)</h2>
+        <div class="header-actions">
+            <button class="users-btn" onclick="openUsersModal()"><i class="fa-solid fa-users"></i> Manage Users</button>
+            <button class="refresh-btn" onclick="loadApplications()"><i class="fa-solid fa-rotate"></i> Refresh Records</button>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-field">
+            <label>Search Company</label>
+            <input type="text" id="filter-search" placeholder="Search by company name...">
+        </div>
+        <div class="filter-field">
+            <label>Entity Type</label>
+            <select id="filter-entity-type">
+                <option value="">All Types</option>
+                <option value="Private Limited">Private Limited</option>
+                <option value="Public Limited">Public Limited</option>
+                <option value="LLP">LLP</option>
+                <option value="Partnership">Partnership</option>
+                <option value="Proprietorship">Proprietorship</option>
+            </select>
+        </div>
+        <div class="filter-field">
+            <label>From Date</label>
+            <input type="date" id="filter-date-from">
+        </div>
+        <div class="filter-field">
+            <label>To Date</label>
+            <input type="date" id="filter-date-to">
+        </div>
+        <button class="refresh-btn" onclick="currentPage = 1; loadApplications();"><i class="fa-solid fa-filter"></i> Apply</button>
+        <button class="users-btn" onclick="clearFilters()"><i class="fa-solid fa-xmark"></i> Clear</button>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>App ID</th>
+                    <th>Company Name</th>
+                    <th>Entity Type</th>
+                    <th>DPIIT Startup</th>
+                    <th>Project Cost Deck</th>
+                    <th>Submission Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="master-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-bar" id="pagination-bar"></div>
+</div>
+
+<div id="fullDataModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-file-invoice"></i> Full Application Information Sheet</h3>
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+        </div>
+        <div id="modal-data-container">
+        </div>
+    </div>
+</div>
+
+<div id="usersManagementModal" class="modal">
+    <div class="modal-content" style="max-width: 950px; width: 90%;">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-users-gear"></i> Portal Administrators User Accounts</h3>
+            <span class="close-modal" onclick="closeUsersModal()">&times;</span>
+        </div>
+        
+        <div class="section-block">
+            <div class="section-title">Create Additional Portal Administrator Identity</div>
+            <form id="add-user-form" class="user-creation-form">
+                <div class="user-field-group">
+                    <label>Name</label>
+                    <input type="text" id="new-user-name" required placeholder="Enter name">
+                </div>
+                <div class="user-field-group">
+                    <label>Email</label>
+                    <input type="email" id="new-user-email" required placeholder="Enter email address">
+                </div>
+                <div class="user-field-group">
+                    <label>Password</label>
+                    <input type="password" id="new-user-password" required placeholder="Enter account password">
+                </div>
+                <button type="submit" class="user-add-btn">Add User</button>
+            </form>
+        </div>
+
+        <div class="table-responsive" style="max-height: 300px; border: 1px solid #e2e8f0; border-radius: 4px;">
+            <table style="margin-top: 0;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th style="text-align: center; width: 100px;">Active</th>
+                    </tr>
+                </thead>
+                <tbody id="users-list-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 🎯 TOAST NOTIFICATION ENGINE
+    function showToast(message, type = 'info', title = null, duration = 4500) {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
+
+        const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+        const titles = { success: 'Success', error: 'Error', warning: 'Warning', info: 'Notice' };
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div class="toast-icon-wrap"><i class="fa-solid ${icons[type] || icons.info}"></i></div>
+            <div class="toast-content">
+                <div class="toast-title">${title || titles[type] || titles.info}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button type="button" class="toast-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="toast-progress" style="animation-duration:${duration}ms;"></div>
+        `;
+
+        container.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+
+        const dismiss = () => {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            setTimeout(() => toast.remove(), 350);
+        };
+
+        const timer = setTimeout(dismiss, duration);
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            clearTimeout(timer);
+            dismiss();
+        });
+    }
+
+    const BACKEND_URL = 'http://localhost:5000';
+    let localApplicationsCache = [];
+    let currentPage = 1;
+
+    // 🎯 JWT AUTHENTICATION — every admin API call sends this token; redirect to login if missing
+    const adminToken = localStorage.getItem('dmrc_admin_token');
+    if (!adminToken) {
+        showToast('Please log in to access the admin dashboard.', 'error', 'Login Required');
+        setTimeout(() => { window.location.href = 'login_admin.html'; }, 2200);
+    }
+    function authHeaders(extra = {}) {
+        return { ...extra, 'Authorization': `Bearer ${adminToken}` };
+    }
+
+    function clearFilters() {
+        document.getElementById('filter-search').value = '';
+        document.getElementById('filter-entity-type').value = '';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        currentPage = 1;
+        loadApplications();
+    }
+
+    function loadApplications() {
+        const tableBody = document.getElementById('master-table-body');
+        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Extracting master records from secure DB...</td></tr>`;
+
+        const search = document.getElementById('filter-search')?.value.trim() || '';
+        const entityType = document.getElementById('filter-entity-type')?.value || '';
+        const dateFrom = document.getElementById('filter-date-from')?.value || '';
+        const dateTo = document.getElementById('filter-date-to')?.value || '';
+
+        const params = new URLSearchParams({ page: currentPage, limit: 10 });
+        if (search) params.append('search', search);
+        if (entityType) params.append('entityType', entityType);
+        if (dateFrom) params.append('dateFrom', dateFrom);
+        if (dateTo) params.append('dateTo', dateTo);
+
+        fetch(`${BACKEND_URL}/api/admin/view-applications?${params.toString()}`, { headers: authHeaders() })
+            .then(response => response.json().then(payload => ({ status: response.status, payload })))
+            .then(({ status, payload }) => {
+                // 🎯 Session expired/invalid token — send admin back to login instead of
+                // showing a misleading "No applications found" message.
+                if (status === 401 || status === 403) {
+                    showToast(payload.message || 'Session expired. Please log in again.', 'error', 'Session Expired');
+                    localStorage.removeItem('dmrc_admin_token');
+                    setTimeout(() => { window.location.href = 'login_admin.html'; }, 2500);
+                    return;
+                }
+
+                if (!payload.success) {
+                    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#bc2818; padding:20px;"><i class="fa-solid fa-triangle-exclamation"></i> ${payload.message || 'Could not load applications.'}</td></tr>`;
+                    document.getElementById('pagination-bar').innerHTML = '';
+                    return;
+                }
+
+                if (payload.data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:40px;">No applications found in the database.</td></tr>`;
+                    document.getElementById('pagination-bar').innerHTML = '';
+                    return;
+                }
+
+                localApplicationsCache = payload.data; 
+                tableBody.innerHTML = '';
+
+                payload.data.forEach((app, idx) => {
+                    const costBreakup = app.uploaded_project_cost_detailed_breakup_path ? `<a class="doc-link" href="${BACKEND_URL}/${app.uploaded_project_cost_detailed_breakup_path}" target="_blank"><i class="fa-solid fa-file-pdf"></i> View Cost Doc</a>` : 'Not Attached';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><span class="badge" style="background:#dbeafe; color:#1e40af;">${app.application_id}</span></td>
+                        <td><strong>${app.company_name}</strong></td>
+                        <td><span class="badge">${app.company_entity_type}</span></td>
+                        <td><span class="badge" style="background: ${app.is_startup_recognized_dpiit === 'Yes' ? '#dcfce7;color:#166534;' : '#ffeeeb;color:#bc2818;'}">${app.is_startup_recognized_dpiit}</span></td>
+                        <td>${costBreakup}</td>
+                        <td>${new Date(app.submitted_at).toLocaleString()}</td>
+                        <td>
+                            <select class="status-select status-${(app.status || 'Pending').replace(/\s+/g, '-').toLowerCase()}" onchange="updateApplicationStatus('${app.application_id}', this.value, this)">
+                                <option value="Pending" ${app.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Under Review" ${app.status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                                <option value="Approved" ${app.status === 'Approved' ? 'selected' : ''}>Approved</option>
+                                <option value="Rejected" ${app.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                            </select>
+                        </td>
+                        <td><button class="action-btn" onclick="viewFullDetails(${idx})"><i class="fa-solid fa-eye"></i> View All Data</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                renderPagination(payload.pagination);
+            })
+            .catch(err => {
+                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#bc2818; padding:20px;"><i class="fa-solid fa-triangle-exclamation"></i> Error communicating with server. Check terminal execution logs.</td></tr>`;
+            });
+    }
+
+    // 🎯 SEARCH + FILTER + PAGINATION — renders page number buttons under the table
+    function renderPagination(pagination) {
+        const bar = document.getElementById('pagination-bar');
+        if (!pagination || pagination.totalPages <= 1) {
+            bar.innerHTML = pagination ? `<span class="pagination-info">${pagination.total} application(s) total</span>` : '';
+            return;
+        }
+
+        const { page, totalPages, total } = pagination;
+        let html = `<span class="pagination-info">Page ${page} of ${totalPages} (${total} total)</span>`;
+        html += `<button class="page-btn" ${page <= 1 ? 'disabled' : ''} onclick="goToPage(${page - 1})"><i class="fa-solid fa-chevron-left"></i></button>`;
+
+        const start = Math.max(1, page - 2);
+        const end = Math.min(totalPages, page + 2);
+        for (let p = start; p <= end; p++) {
+            html += `<button class="page-btn ${p === page ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`;
+        }
+
+        html += `<button class="page-btn" ${page >= totalPages ? 'disabled' : ''} onclick="goToPage(${page + 1})"><i class="fa-solid fa-chevron-right"></i></button>`;
+        bar.innerHTML = html;
+    }
+
+    function goToPage(p) {
+        currentPage = p;
+        loadApplications();
+    }
+
+    // 🎯 APPLICATION STATUS TRACKING — called when admin changes the status dropdown
+    function updateApplicationStatus(applicationId, newStatus, selectEl) {
+        const previousValue = selectEl.getAttribute('data-prev') || selectEl.value;
+        selectEl.disabled = true;
+
+        fetch(`${BACKEND_URL}/api/admin/update-status/${applicationId}`, {
+            method: 'PATCH',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ status: newStatus })
+        })
+            .then(response => response.json())
+            .then(payload => {
+                if (payload.success) {
+                    showToast(payload.message || `Status updated to ${newStatus}`, 'success', 'Status Updated');
+                    selectEl.className = `status-select status-${newStatus.replace(/\s+/g, '-').toLowerCase()}`;
+                    selectEl.setAttribute('data-prev', newStatus);
+                    const cachedApp = localApplicationsCache.find(a => a.application_id === applicationId);
+                    if (cachedApp) cachedApp.status = newStatus;
+                } else {
+                    showToast(payload.message || 'Could not update status.', 'error', 'Update Failed');
+                    selectEl.value = previousValue;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Connection refused. Please verify if the local backend is alive on port 5000.', 'error');
+                selectEl.value = previousValue;
+            })
+            .finally(() => {
+                selectEl.disabled = false;
+            });
+    }
+
+    function viewFullDetails(index) {
+        const app = localApplicationsCache[index];
+        const container = document.getElementById('modal-data-container');
+        
+        const getDocRow = (path, text) => path ? `<a class="doc-link" href="${BACKEND_URL}/${path}" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download ${text}</a>` : '<span style="color:#94a3b8;">Not Uploaded</span>';
+
+        container.innerHTML = `
+            <div class="section-block">
+                <div class="section-title">1. Company Information / Details</div>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">1(a) Name of Company</span><span class="data-value">${app.company_name}</span></div>
+                    <div class="data-item"><span class="data-label">1(b) Address, Website & Email</span><span class="data-value">${app.company_address_website_email}</span></div>
+                    <div class="data-item"><span class="data-label">1(c) Brief Details & Background</span><span class="data-value">${app.company_brief_details_background}</span></div>
+                    <div class="data-item"><span class="data-label">1(d) Year of Incorporation</span><span class="data-value">${app.company_year_and_certificate}</span></div>
+                    <div class="data-item"><span class="data-label">Certificate of Incorporation (Notarised)</span><span class="data-value">${getDocRow(app.uploaded_certificate_incorporation_path, "Certificate")}</span></div>
+                    <div class="data-item"><span class="data-label">1(e) Power of Attorney Document</span><span class="data-value">${getDocRow(app.uploaded_power_of_attorney_path, "Power of Attorney")}</span></div>
+                    <div class="data-item"><span class="data-label">1(f) Entity Type</span><span class="data-value">${app.company_entity_type}</span></div>
+                    <div class="data-item"><span class="data-label">Relevant Entity Type Proof Document</span><span class="data-value">${getDocRow(app.uploaded_entity_type_document_path, "Entity Proof")}</span></div>
+                    <div class="data-item"><span class="data-label">1(g) DPIIT Startup Recognition</span><span class="data-value">${app.is_startup_recognized_dpiit}</span></div>
+                    <div class="data-item"><span class="data-label">DPIIT Proof Registration Document</span><span class="data-value">${getDocRow(app.uploaded_dpiit_proof_path, "DPIIT Registration")}</span></div>
+                    <div class="data-item"><span class="data-label">1(h) Micro or Small Enterprise (MSE) Status</span><span class="data-value">${app.is_msme_registered}</span></div>
+                    <div class="data-item"><span class="data-label">Udyam Registration Document</span><span class="data-value">${getDocRow(app.uploaded_udyam_registration_path, "Udyam Doc")}</span></div>
+                    <div class="data-item"><span class="data-label">1(i) Financial Year 2025-26 Turnover</span><span class="data-value">${app.turnover_amount_2025_26}</span></div>
+                    <div class="data-item"><span class="data-label">2025-26 Audited Balance Sheet</span><span class="data-value">${getDocRow(app.uploaded_balance_sheet_2025_26_path, "Balance Sheet 2025-26")}</span></div>
+                    <div class="data-item"><span class="data-label">Financial Year 2024-25 Turnover</span><span class="data-value">${app.turnover_amount_2024_25}</span></div>
+                    <div class="data-item"><span class="data-label">2024-25 Audited Balance Sheet</span><span class="data-value">${getDocRow(app.uploaded_balance_sheet_2024_25_path, "Balance Sheet 2024-25")}</span></div>
+                    <div class="data-item"><span class="data-label">Financial Year 2023-24 Turnover</span><span class="data-value">${app.turnover_amount_2023_24}</span></div>
+                    <div class="data-item"><span class="data-label">2023-24 Audited Balance Sheet</span><span class="data-value">${getDocRow(app.uploaded_balance_sheet_2023_24_path, "Balance Sheet 2023-24")}</span></div>
+                    <div class="data-item"><span class="data-label">1(j) Confirmed Not Formed by Splitting/Reconstruction</span><span class="data-value">${app.confirm_not_formed_by_splitting}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-title">2. Details of Proposed Product/Software/Solution for Innovation</div>
+                <div class="data-grid">
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">2(a) Problem Statement</span><span class="data-value">${app.problem_statement}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">2(b) Product Description, Technology & Stack Details</span><span class="data-value">${app.product_description_and_technology}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">Hardware-Software Details</span><span class="data-value">${app.hardware_software_details}</span></div>
+                    <div class="data-item"><span class="data-label">Proposed Solution Presentation Deck / Video Demo</span><span class="data-value">${getDocRow(app.uploaded_proposed_solution_deck_path, "Solution Deck/Video Link")}</span></div>
+                    <div class="data-item"><span class="data-label">2(c) Technology Involved Details (Prototype Phase)</span><span class="data-value">${app.technology_involved_details}</span></div>
+                    <div class="data-item"><span class="data-label">Technology Literature Documents</span><span class="data-value">${getDocRow(app.uploaded_technology_relevant_docs_path, "Technology Literature")}</span></div>
+                    <div class="data-item"><span class="data-label">2(d) Current Status of Product/Service</span><span class="data-value">${app.current_product_service_status}</span></div>
+                    <div class="data-item"><span class="data-label">2(e) Intellectual Property Right (IPR) Concept Coverage</span><span class="data-value">${app.has_ipr_covering_concept}</span></div>
+                    <div class="data-item"><span class="data-label">Freedom to Operate in India Verification</span><span class="data-value">${app.has_freedom_to_operate_india}</span></div>
+                    <div class="data-item"><span class="data-label">IPR Supporting Documents</span><span class="data-value">${getDocRow(app.uploaded_ipr_relevant_document_path, "IPR Document")}</span></div>
+                    <div class="data-item"><span class="data-label">2(f) Reference Standard for Product Validation</span><span class="data-value">${app.product_validation_reference_standard || 'N/A'}</span></div>
+                    <div class="data-item"><span class="data-label">Reference Standard Validation Proof</span><span class="data-value">${getDocRow(app.uploaded_reference_standard_doc_path, "Validation Standard")}</span></div>
+                    <div class="data-item"><span class="data-label">2(g) Testing Facility/Infrastructure Required</span><span class="data-value">${app.testing_facility_infrastructure_required || 'N/A'}</span></div>
+                    <div class="data-item"><span class="data-label">Testing Requirements Documents</span><span class="data-value">${getDocRow(app.uploaded_testing_facility_doc_path, "Testing Requirements")}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">2(h) Support Required from DMRC Engine</span><span class="data-value">${app.support_required_from_dmrc}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">2(i) Benefits Accrued to DMRC (Cost, Reliability, Manpower Optimization)</span><span class="data-value">${app.benefits_that_would_accrue_to_dmrc}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">2(j) Intended User Base and Paying Customers</span><span class="data-value">${app.intended_user_and_payer}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-title">3. Information About Founders of Company & Integrity Profiles</div>
+                <div class="data-grid">
+                    <div class="data-item"><strong>Founder Member 1 Name:</strong><span class="data-value">${app.founder1_name}</span></div>
+                    <div class="data-item"><strong>Nationality:</strong><span class="data-value">${app.founder1_nationality}</span></div>
+                    <div class="data-item"><strong>Shareholding Percentage:</strong><span class="data-value">${app.founder1_shareholding_percentage}</span></div>
+                    <div class="data-item"><strong>LinkedIn/Email URL:</strong><span class="data-value">${app.founder1_linkedin_url_email}</span></div>
+                    <div class="data-item"><strong>Contact Mobile Number:</strong><span class="data-value">${app.founder1_mobile_no}</span></div>
+                    <div class="data-item"><strong>Identity Type & Proof:</strong><span class="data-value">${app.founder1_identity_proof_type} - ${getDocRow(app.uploaded_founder1_id_proof_path, "ID Document")}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><strong>Address of Founder 1:</strong><span class="data-value">${app.founder1_address}</span></div>
+                    
+                    <div class="data-item" style="grid-column: span 2;"><hr style="border:1px dashed #cbd5e1;"></div>
+
+                    <div class="data-item"><strong>Founder Member 2 Name:</strong><span class="data-value">${app.founder2_name || 'N/A'}</span></div>
+                    <div class="data-item"><strong>Nationality:</strong><span class="data-value">${app.founder2_nationality || 'N/A'}</span></div>
+                    <div class="data-item"><strong>Shareholding Percentage:</strong><span class="data-value">${app.founder2_shareholding_percentage || 'N/A'}</span></div>
+                    <div class="data-item"><strong>LinkedIn/Email URL:</strong><span class="data-value">${app.founder2_linkedin_url_email || 'N/A'}</span></div>
+                    <div class="data-item"><strong>Identity Type & Proof:</strong><span class="data-value">${app.founder2_identity_proof_type || 'N/A'} - ${getDocRow(app.uploaded_founder2_id_proof_path, "ID Document 2")}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><strong>Address of Founder 2:</strong><span class="data-value">${app.founder2_address || 'N/A'}</span></div>
+
+                    <div class="data-item" style="grid-column: span 2;"><hr style="border:1px dashed #cbd5e1;"></div>
+
+                    <div class="data-item"><span class="data-label">Consolidated Shareholding Percentage Proof</span><span class="data-value">${getDocRow(app.uploaded_shareholding_percentage_doc_path, "Shareholding Summary")}</span></div>
+                    <div class="data-item"><span class="data-label">3(b) Co-founders Relationship Duration & Background</span><span class="data-value">${app.founders_relationship_duration_background}</span></div>
+                    <div class="data-item"><span class="data-label">3(c) Founder's Agreement Activation Status</span><span class="data-value">${app.has_founders_agreement}</span></div>
+                    <div class="data-item"><span class="data-label">Founder's Agreement Uploaded File</span><span class="data-value">${getDocRow(app.uploaded_founders_agreement_copy_path, "Founders Agreement")}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">3(d) Professional Domain Expertise of Team Members</span><span class="data-value">${app.team_domains_of_expertise}</span></div>
+                    
+                    <div class="data-item"><strong>3(e) Pending Criminal Cases Exist:</strong><span class="data-value">${app.has_pending_criminal_cases}</span></div>
+                    <div class="data-item"><strong>Criminal Cases Log Sheet:</strong><span class="data-value">${app.criminal_cases_details || 'None'}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><strong>No-Criminal Case Signed Declaration:</strong><span class="data-value">${getDocRow(app.uploaded_criminal_no_case_declaration_path, "Criminal Clearance Declaration")}</span></div>
+                    
+                    <div class="data-item"><strong>3(f) Blacklisting Records (Last 3 Years):</strong><span class="data-value">${app.is_blacklisted_last_3_years}</span></div>
+                    <div class="data-item"><strong>Blacklisting Trace Logs:</strong><span class="data-value">${app.blacklisted_details || 'None'}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><strong>Blacklist Clear Signed Declaration:</strong><span class="data-value">${getDocRow(app.uploaded_blacklisted_docs_or_declaration_path, "Blacklist Clearance Declaration")}</span></div>
+
+                    <div class="data-item"><strong>3(g) Pending Litigation/Arbitration with Govt/PSU:</strong><span class="data-value">${app.has_pending_litigations_arbitration}</span></div>
+                    <div class="data-item"><strong>Litigation Trace Logs:</strong><span class="data-value">${app.litigation_details || 'None'}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><strong>Litigation Clear Signed Declaration:</strong><span class="data-value">${getDocRow(app.uploaded_litigation_docs_or_declaration_path, "Litigation Clearance Declaration")}</span></div>
+
+                    <div class="data-item"><strong>3(h) Financial Defaulter/Bankrupt Status:</strong><span class="data-value">${app.is_declared_financial_defaulter}</span></div>
+                    <div class="data-item"><strong>Financial Non-Defaulter Clearance Declaration:</strong><span class="data-value">${getDocRow(app.uploaded_financial_defulter_declaration_path, "Solvency Declaration")}</span></div>
+
+                    <div class="data-item"><strong>3(i) Founders Current/Former DMRC Employee:</strong><span class="data-value">${app.is_founder_current_former_dmrc_employee}</span></div>
+                    <div class="data-item"><strong>DMRC Employment Tenure Details:</strong><span class="data-value">${app.dmrc_employee_founder_details || 'N/A'}</span></div>
+
+                    <div class="data-item"><strong>3(j) Founders Blood/Legal Relation to DMRC Employee:</strong><span class="data-value">${app.is_founder_related_to_dmrc_employee}</span></div>
+                    <div class="data-item"><strong>DMRC Related Employee Profile Sheet:</strong><span class="data-value">${app.dmrc_related_employee_details || 'N/A'}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-title">4. Company Credentials & Past Operational Experience</div>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">4(a) Min 3 End-Client Performance Certificates</span><span class="data-value">${getDocRow(app.uploaded_performance_certificates_path, "Performance Certificates Bundle")}</span></div>
+                    <div class="data-item"><span class="data-label">4(b) Manufacturing Capability Overview of Offered Product</span><span class="data-value">${app.manufacturing_capability_details}</span></div>
+                    <div class="data-item"><span class="data-label">Manufacturing Proof Documents</span><span class="data-value">${getDocRow(app.uploaded_manufacturing_capability_docs_path, "Manufacturing Certificates")}</span></div>
+                    <div class="data-item"><span class="data-label">4(c) Product Quality Certifications Achieved by Firm</span><span class="data-value">${app.product_quality_certifications_details || 'None Logged'}</span></div>
+                    <div class="data-item"><span class="data-label">Quality Assurance Certificates Bundle</span><span class="data-value">${getDocRow(app.uploaded_product_quality_certs_path, "Quality Certs File")}</span></div>
+                    <div class="data-item"><span class="data-label">4(d) Validations Received in Regard to Proposed Solution</span><span class="data-value">${app.proposed_product_validations_details || 'None Logged'}</span></div>
+                    <div class="data-item"><span class="data-label">Solution Validation Proof Documents</span><span class="data-value">${getDocRow(app.uploaded_proposed_product_validations_path, "Validation Sheet")}</span></div>
+                    <div class="data-item"><span class="data-label">4(e) Company Organization Chart & Key Innovators CVs</span><span class="data-value">${getDocRow(app.uploaded_company_organisation_chart_path, "Organizational Structure & CVs")}</span></div>
+                    <div class="data-item"><span class="data-label">4(f) After Sales Service Support Organization Structure</span><span class="data-value">${app.after_sales_support_organisation_details}</span></div>
+                    <div class="data-item"><span class="data-label">Service Support Capability Proofs</span><span class="data-value">${getDocRow(app.uploaded_after_sales_support_docs_path, "After-Sales Support Dossier")}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-title">5. Project Financial Breakup & Valuation Estimates</div>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">5(a) Detailed Project Cost Breakdown Sheet</span><span class="data-value">${getDocRow(app.uploaded_project_cost_detailed_breakup_path, "Detailed Cost Breakup PDF")}</span></div>
+                    <div class="data-item"><strong>5(b) Seeks Active Seed Funding From DMRC:</strong><span class="data-value">${app.seeks_seed_funding_from_dmrc}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">Seed Capital Quantum Allocation & Utilization Breakdown</span><span class="data-value">${app.seed_funding_quantum_and_utilization_details || 'N/A'}</span></div>
+                    <div class="data-item"><strong>5(c) Seeks Interest-bearing Mobilization Advance (Max 20%):</strong><span class="data-value">${app.seeks_mobilisation_advance_from_dmrc}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">5(d) Business Potential Estimates & Plan Regarding ROI Metrics</span><span class="data-value">${app.business_potential_and_roi_plan}</span></div>
+                    <div class="data-item"><span class="data-label">Business Plan Feasibility Documents</span><span class="data-value">${getDocRow(app.uploaded_business_potential_roi_docs_path, "ROI Plan Dossier")}</span></div>
+                    <div class="data-item"><span class="data-label">5(e) Existing Investors List, Nature & Shareholding Summary</span><span class="data-value">${getDocRow(app.uploaded_existing_investors_details_path, "Cap Table Document")}</span></div>
+                    <div class="data-item"><span class="data-label">5(f) External Capital Raised Till Date (INR in Lakhs)</span><span class="data-value">${app.external_funds_raised_till_date_inr_lakhs} Lakhs</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">5(g)/5(h) Total Market Trend, Total Addressable Size & Target Unit Pricing</span><span class="data-value">${app.market_trend_size_and_intended_price}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">5(i) Competitors Landscape, Differentiation Matrix & Advantage Sheet</span><span class="data-value">${app.competitors_differentiation_advantage}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-title">6 & 7. Project Execution Milestones & Startup Profiling</div>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">6(a) Core Project Milestones Timeline Roadmap</span><span class="data-value">${getDocRow(app.uploaded_project_milestones_timeline_path, "Gantt Chart/Milestones Timeline")}</span></div>
+                    <div class="data-item"><span class="data-label">7(a) Core Target Industrial Domain Sector</span><span class="data-value">${app.startup_sector_domain || 'N/A'}</span></div>
+                    <div class="data-item" style="grid-column: span 2;"><span class="data-label">7(b) Core Reason Behind Project Selection & Specific End-User Need</span><span class="data-value">${app.startup_idea_reason_and_user_need || 'N/A'}</span></div>
+                    <div class="data-item"><span class="data-label">7(c) Detailed Structural Composition of Startup</span><span class="data-value">${getDocRow(app.uploaded_startup_composition_registration_path, "Startup Composition Details")}</span></div>
+                    <div class="data-item"><span class="data-label">7(d) Core Technical Credentials of CEO, Founders & Tech Heads</span><span class="data-value">${getDocRow(app.uploaded_founders_ceo_techhead_cv_credentials_path, "Executive Credentials/CV Bundle")}</span></div>
+                </div>
+            </div>
+
+            <div class="section-block" style="border-left: 5px solid #059669;">
+                <div class="section-title" style="color:#059669;">8. Final Comprehensive Project Presentation & Declarations</div>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">8. Main Innovation Pitch Deck / Detailed Project Report (DPR)</span><span class="data-value">${getDocRow(app.uploaded_detailed_pitch_deck_presentation_path, "Master Pitch Deck / DPR")}</span></div>
+                    <div class="data-item"><strong>9. Legal Penal Action Liability Terms Consent Status:</strong><span class="data-value">${app.applicant_confirm_and_submit_declaration === 1 ? '<span style="color:#059669; font-weight:bold;"><i class="fa-solid fa-square-check"></i> Accepted & Certified</span>' : '<span style="color:#bc2818;">Rejected</span>'}</span></div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('fullDataModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('fullDataModal').style.display = 'none';
+    }
+
+    /* ==================== 🔒 USERS ACCOUNT MANAGEMENT MODAL POPUP ==================== */
+    function openUsersModal() {
+        document.getElementById('usersManagementModal').style.display = 'block';
+        loadPortalUsers();
+    }
+
+    function closeUsersModal() {
+        document.getElementById('usersManagementModal').style.display = 'none';
+        document.getElementById('add-user-form').reset();
+    }
+
+    function loadPortalUsers() {
+        const uBody = document.getElementById('users-list-table-body');
+        uBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading sub-user accounts matrix...</td></tr>`;
+
+        fetch(`${BACKEND_URL}/api/admin/users`, { headers: authHeaders() })
+            .then(res => res.json())
+            .then(payload => {
+                if (!payload.success || payload.data.length === 0) {
+                    uBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#64748b;">No sub-user identities registered. Create one above.</td></tr>`;
+                    return;
+                }
+                uBody.innerHTML = '';
+                payload.data.forEach(user => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${user.name}</strong></td>
+                        <td>${user.email}</td>
+                        <td style="text-align: center;"><span class="badge" style="background:#dcfce7; color:#166534;">1</span></td>
+                    `;
+                    uBody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                uBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#bc2818; padding:15px;"><i class="fa-solid fa-triangle-exclamation"></i> Error pulling sub-users data stack.</td></tr>`;
+            });
+    }
+
+    document.getElementById('add-user-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('new-user-name').value.trim();
+        const email = document.getElementById('new-user-email').value.trim();
+        const password = document.getElementById('new-user-password').value;
+
+        fetch(`${BACKEND_URL}/api/admin/users`, {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ name, email, password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast("New portal user added successfully!", "success");
+                document.getElementById('add-user-form').reset();
+                loadPortalUsers();
+            } else {
+                showToast(data.message, "error", "Error Adding User");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showToast("Failed to establish server connection to register user.", "error");
+        });
+    });
+
+    window.onload = () => { if (adminToken) loadApplications(); };
+</script>
+</body>
+</html>

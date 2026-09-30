@@ -1,0 +1,654 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+
+html, body, #app, #root, .wrapper, .page-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+}
+html {
+    /* 🎯 FIXED: Allowed smooth mechanical vertical chaining */
+    overscroll-behavior-y: auto !important; 
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    /* 🎯 FIXED: Removed block parameter to prevent submit freeze */
+    overscroll-behavior-y: auto !important;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background-color: #f8fafc;
+}
+
+
+
+/* Base Resets & Professional Setup */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.dmrc-body {
+    background-color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #334155;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Header Section UI Layout */
+.main-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Logo aur baki saare elements ko vertical middle me rakhega */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+    
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo-wrapper {
+    display: flex;
+    flex-direction: row;  /* Yeh strictly ensure karega ki text logo ke SAAMNE hi rahe */
+    align-items: center;   /* Vertical center alignment icon aur text ke beech */
+    gap: 14px;            /* Icon aur text ke beech ka perfect gap */
+    flex-shrink: 0;        /* Logo complex compress nahi hoga */
+    border-right: 2px solid #cbd5e1;
+    padding-right: 20px;
+}
+
+.logo-wrapper img {
+    width: 65px;          /* Size thoda balanced kiya taaki spacing issue na aaye */
+    height: 65px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex-shrink: 0;
+}
+
+.logo-text h1 {
+    font-size: 24px;      /* Font thoda chota kiya taaki saamne ekdum symmetric fit ho */
+    font-weight: 800;
+    color: #001b5e;
+    margin: 0;
+    line-height: 1;
+}
+
+.hindi-name {
+    font-size: 11px;      /* Professional compact scaling */
+    font-weight: 600;
+    line-height: 1.2;
+    color: #001b5e;
+}
+
+.english-name {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #001b5e;
+}
+
+.hindi-venture {
+    font-size: 9.5px;
+    line-height: 1.2;
+    color: #111;
+    margin-top: 1px;
+}
+
+.english-venture {
+    font-size: 8.5px;
+    line-height: 1.2;
+    color: #111;
+}
+
+
+
+/* =========================================================================
+    👑 PERMANENT DMRC LAYOUT LOCK ENGINE (100% EXACT IMAGE MATCH)
+   ========================================================================= */
+
+.main-container {
+    display: flex !important;
+    flex-direction: row !important;   
+    flex-wrap: nowrap !important;     
+    
+    /* 🎯 THE BIG SCREEN REPAIR: Header ke matching bounds lagaye */
+    max-width: 100% !important;     
+    width: 100% !important;
+    margin-left: 0  !important;  
+    margin-right: 0 !important;    
+    
+    padding: 16px 24px 16px 0px !important;    /* Left edge padding strictly logo ke shuruat se match karegi */
+    gap: 35px !important;             
+    align-items: start !important;
+}
+
+/* 2. Left Sidebar Panel - Logo line ke sateek niche locked
+   🎯 top/height ab --dmrc-header-h variable use karte hain (JS se set hota hai,
+   index1.html ke end me) taaki sidebar EXACTLY header ke height ke barabar
+   niche se lock ho jaye — pehle top:100px hardcoded tha jo real header height
+   se kam tha, isliye thoda "scroll phir stick" wala jump dikhta tha. */
+.sidebar-panel {
+    display: block !important;
+    flex: 0 0 382px !important;        
+    width: 382px !important;
+    min-width: 382px !important;
+    max-width: 382px !important;
+    
+    height: calc(100vh - var(--dmrc-header-h, 100px) - 20px) !important;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: var(--dmrc-header-h, 100px) !important;
+    align-self: start !important;
+}
+
+/* 3. Right Content Area - Bachi hui saari screen fluid tarike se use karega */
+.form-container {
+    flex: 1 !important;               
+    min-width: 0 !important;           
+    width: 100% !important;
+   
+}
+
+/* 4. Chhoti screen ke liye standard fallback */
+@media screen and (max-width: 1200px) {
+    .main-container {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        padding: 12px 16px 12px 0px !important; 
+        gap: 15px !important;          
+    }
+}
+
+/* Left Sidebar Menu Component */
+.sidebar-nav {
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    height: 100% !important;        /* 👈 Isse buttons ka inner box poore outer panel jitna lamba ho jayega */
+    justify-content: flex-start;
+}
+
+/* 🎯 SMART SIDEBAR TEXT SCALING MATRIX (BADI SCREENS KE LIYE) */
+.side-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px !important;          /* Icon aur text ke beech professional spacing */
+    padding: 16px 20px !important; /* 👈 Badi screen ke liye padding thodi badhayi taaki tab responsive dikhe */
+    text-align: left;
+    font-weight: 700;
+    font-size: 15.5px !important;  /* 👈 Badi screen par size ab chota nahi lagega, damdaar medium rahega */
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 🎯 SIDEBAR ICON SCALING (BADI SCREENS KE LIYE) */
+.side-btn i {
+    width: 20px !important;
+    font-size: 16px !important;   /* 👈 Icons ka size bhi button ke scale par set kiya */
+    text-align: center;
+    color: #1e3a8a;
+}
+
+/* 🎯 AUTOMATIC COMFORT ADJUSTMENT FOR SMALLER LAPTOPS */
+@media screen and (max-width: 1366px) {
+    .side-btn {
+        padding: 13px 16px !important; /* Choti screen ke hisab se safe compact tight breathing area */
+        font-size: 13.5px !important;  /* Chote laptop screen par automatically safe balanced sizing */
+        gap: 12px !important;
+    }
+    .side-btn i {
+        font-size: 14px !important;
+    }
+}
+
+.side-btn:hover {
+    background-color: #f8fafc;
+}
+
+.side-btn.active {
+    background-color: #1e3a8a !important;
+    color: #ffffff !important;
+}
+
+.side-btn.active i {
+    color: #ffffff !important;
+}
+
+
+/* Right Content Core Form Styles */
+.form-container {
+    grid-column: span 9 / span 9;
+}
+
+.form-section {
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    padding: 11px 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Grid & Padding Utilities Framework */
+.p-5 { padding: 20px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.pt-4 { padding-top: 16px; }
+.pt-3 { padding-top: 12px; }
+.mb-2 { margin-bottom: 8px; }
+.space-y-1 > * + * { margin-top: 4px; }
+.space-y-4 > * + * { margin-top: 16px; }
+.text-justified p { text-align: justify; margin-bottom: 4px; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.grid-12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.col-span-8 { grid-column: span 8 / span 8; }
+.col-span-4 { grid-column: span 4 / span 4; }
+.gap-1 { gap: 4px; }
+.gap-3 { gap: 12px; }
+
+.flex-row { display: flex; flex-direction: row; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-align-center { display: flex; align-items: center; }
+.align-start { align-items: flex-start; }
+.border-top { border-top: 1px solid #f1f5f9; }
+
+/* Global Inputs & Typography styling */
+.field-label {
+    display: block;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 5px;
+}
+
+.required-star { color: #ef4444; }
+
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif; /* Saare input, select aur textarea ka font ek jaisa ho jayega */
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: rgba(248, 250, 252, 0.5);
+    outline: none;
+    color: #334155;
+}
+
+/* Isse saare placeholders ka font aur color bilkul same aur ek jaisa ho jayega */
+.form-input::placeholder, 
+select.form-input option {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.form-input:focus {
+    border-color: #1e3a8a;
+    background-color: #ffffff;
+}
+
+.textarea-no-resize { resize: none; }
+.text-slate { color: #475569; }
+.bg-white { background-color: #ffffff !important; }
+.text-red { color: #ef4444 !important; }
+
+/* Identical Symmetrical Upload Dashed Box Design (Condition 3 Fixed) */
+.upload-dashed-box, .upload-dashed-box-small {
+    border: 1px dashed #cbd5e1;
+    background-color: rgba(248, 250, 252, 0.4);
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+    min-height: 62px;
+    position: relative;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.upload-dashed-box:hover, .upload-dashed-box-small:hover {
+    background-color: #f1f5f9;
+    border-color: #1e3a8a;
+}
+
+/* Input click overlay block restriction fix (Condition 1 Fixed) */
+.file-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.upload-title, .upload-title-small {
+    font-weight: 700;
+    color: #1e3a8a;
+    z-index: 1;
+}
+
+.upload-sub {
+    font-size: 9px;
+    color: #94a3b8;
+    margin-top: 3px;
+    z-index: 1;
+}
+
+.upload-title-mini {
+    font-size: 9px;
+    font-weight: 700;
+    color: #1e3a8a;
+    z-index: 1;
+    text-align: center;
+}
+
+/* Controls Styling */
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.radio-label input {
+    accent-color: #1e3a8a;
+}
+
+.checkbox-custom {
+    width: 16px !important;
+    height: 16px !important;
+    accent-color: #1e3a8a; /* Tick lagne par matching corporate blue color */
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.checkbox-text-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none; /* Double click par text bekar me select/blue nahi hoga */
+}
+
+.turnover-year-title {
+    font-weight: 700;
+    color: #475569;
+    display: block;
+}
+
+/* Accordion Engine display system */
+.accordion-content {
+    transition: max-height 0.3s ease-out;
+}
+
+.hidden-section {
+    display: none !important;
+}
+
+/* Dynamic Founders Styling Board */
+.founder-card {
+    background-color: #f8fafc;
+    padding: 14px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.founder-card-title {
+    font-weight: 700;
+    color: #1e3a8a;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.btn-add-more {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px dashed #1e3a8a;
+    color: #1e3a8a;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.btn-add-more:hover {
+    background-color: #eff6ff;
+}
+
+/* Immutable Bottom Declaration Frame Layout */
+.declaration-panel {
+    background-color: #f1f5f9;
+    border-radius: 4px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.02);
+}
+
+.declaration-title {
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.declaration-title i {
+    color: #1e3a8a;
+    font-size: 14px;
+}
+
+.declaration-text {
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+.submit-row {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.btn-submit {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-submit:hover {
+    background-color: #172554;
+}
+
+.sub-label-text {
+    font-size: 10px;
+    color: #94a3b8;
+    display: block;
+    font-weight: 400;
+}
+
+.h-116 { min-height: 110px !important; }
+
+
+
+/* Main Heading ka font bada aur bold karne ke liye */
+.header-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a8a;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px; /* Title aur Note ke ibeech gap */
+}
+
+/* Subtitle aur Note wali line ka font thoda bada karne ke liye */
+.header-subtitle {
+font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Note: All fields are mandatory ko highlight karne ke liye */
+.mandatory-note {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+/* Save draft button ka size font ke sath balance karne ke liye */
+
+/*.btn-save-draft {
+    flex-shrink: 0; 
+    padding: 10px 18px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #1e3a8a;
+    color: #1e3a8a;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-save-draft:hover {
+    background-color: #eff6ff;
+}
+*/
+.header-title-block {
+    flex-grow: 1;
+    text-align: center;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.declaration-checkbox-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 99; /* Kisi bhi invisible frame ke upar overlay rakhne ke liye */
+}
+
+
+
+
+.form-input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+
+/* Red custom popup message ka design */
+.custom-error-message {
+    color: #ef4444;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: fadeInError 0.3s ease-in-out;
+}
+
+@keyframes fadeInError {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+input, select, textarea, button, label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+
+
+/* =========================================================================
+    👑 MIN-HEIGHT BUG FIX: FORCE SCROLLER TO STAY ACTIVE ON SECTIONS 6, 7, 8
+   ========================================================================= */
+
+.form-container {
+    /* Isse right content hamesha viewport se bada rahega aur scroller kabhi gayab nahi hoga */
+    min-height: 120vh !important; 
+    
+    /* Neeche declaration aur button ke baad thoda extra clean breathing space */
+    padding-bottom: 100px !important; 
+}
