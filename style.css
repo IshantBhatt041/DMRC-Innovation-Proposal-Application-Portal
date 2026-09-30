@@ -9,7 +9,7 @@ html, body, #app, #root, .wrapper, .page-wrapper {
     display: block !important;
 }
 html {
-    /* 🎯 FIXED: Allowed smooth mechanical vertical chaining */
+    /*  FIXED: Allowed smooth mechanical vertical chaining */
     overscroll-behavior-y: auto !important; 
     scroll-behavior: smooth;
     height: 100%;
@@ -17,7 +17,7 @@ html {
 
 body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    /* 🎯 FIXED: Removed block parameter to prevent submit freeze */
+    /*  FIXED: Removed block parameter to prevent submit freeze */
     overscroll-behavior-y: auto !important;
     max-width: 100%;
     overflow-x: hidden;
@@ -126,9 +126,9 @@ body.dmrc-body {
 
 
 
-/* =========================================================================
-    👑 PERMANENT DMRC LAYOUT LOCK ENGINE (100% EXACT IMAGE MATCH)
-   ========================================================================= */
+/* 
+     PERMANENT DMRC LAYOUT LOCK 
+   */
 
 .main-container {
     display: flex !important;
@@ -147,7 +147,7 @@ body.dmrc-body {
 }
 
 /* 2. Left Sidebar Panel - Logo line ke sateek niche locked
-   🎯 top/height ab --dmrc-header-h variable use karte hain (JS se set hota hai,
+    top/height ab --dmrc-header-h variable use karte hain (JS se set hota hai,
    index1.html ke end me) taaki sidebar EXACTLY header ke height ke barabar
    niche se lock ho jaye — pehle top:100px hardcoded tha jo real header height
    se kam tha, isliye thoda "scroll phir stick" wala jump dikhta tha. */
@@ -193,20 +193,20 @@ body.dmrc-body {
     display: flex;
     flex-direction: column;
 
-    height: 100% !important;        /* 👈 Isse buttons ka inner box poore outer panel jitna lamba ho jayega */
+    height: 100% !important;        /*  Isse buttons ka inner box poore outer panel jitna lamba ho jayega */
     justify-content: flex-start;
 }
 
-/* 🎯 SMART SIDEBAR TEXT SCALING MATRIX (BADI SCREENS KE LIYE) */
+/*  SMART SIDEBAR TEXT SCALING MATRIX (BADI SCREENS KE LIYE) */
 .side-btn {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 14px !important;          /* Icon aur text ke beech professional spacing */
-    padding: 16px 20px !important; /* 👈 Badi screen ke liye padding thodi badhayi taaki tab responsive dikhe */
+    padding: 16px 20px !important; /*  Badi screen ke liye padding thodi badhayi taaki tab responsive dikhe */
     text-align: left;
     font-weight: 700;
-    font-size: 15.5px !important;  /* 👈 Badi screen par size ab chota nahi lagega, damdaar medium rahega */
+    font-size: 15.5px !important;  /*  Badi screen par size ab chota nahi lagega, damdaar medium rahega */
     background: transparent;
     border: none;
     border-bottom: 1px solid #f1f5f9;
@@ -215,15 +215,15 @@ body.dmrc-body {
     transition: background-color 0.2s;
 }
 
-/* 🎯 SIDEBAR ICON SCALING (BADI SCREENS KE LIYE) */
+/*  SIDEBAR ICON SCALING  */
 .side-btn i {
     width: 20px !important;
-    font-size: 16px !important;   /* 👈 Icons ka size bhi button ke scale par set kiya */
+    font-size: 16px !important;   /*  Icons ka size bhi button ke scale par set kiya */
     text-align: center;
     color: #1e3a8a;
 }
 
-/* 🎯 AUTOMATIC COMFORT ADJUSTMENT FOR SMALLER LAPTOPS */
+/*  AUTOMATIC COMFORT ADJUSTMENT FOR SMALLER LAPTOPS */
 @media screen and (max-width: 1366px) {
     .side-btn {
         padding: 13px 16px !important; /* Choti screen ke hisab se safe compact tight breathing area */
@@ -641,9 +641,9 @@ input, select, textarea, button, label {
 
 
 
-/* =========================================================================
-    👑 MIN-HEIGHT BUG FIX: FORCE SCROLLER TO STAY ACTIVE ON SECTIONS 6, 7, 8
-   ========================================================================= */
+/* 
+     MIN-HEIGHT BUG FIX: FORCE SCROLLER TO STAY ACTIVE ON SECTIONS 6, 7, 8
+   */
 
 .form-container {
     /* Isse right content hamesha viewport se bada rahega aur scroller kabhi gayab nahi hoga */
