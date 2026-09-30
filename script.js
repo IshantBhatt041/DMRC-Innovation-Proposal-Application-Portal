@@ -1,7 +1,7 @@
-// =============================================================================
-// 🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+
+//  TOAST NOTIFICATION ENGINE - Replaces native alert() popups
 // Self-contained: injects its own CSS so it works on whichever page includes this file
-// =============================================================================
+
 (function injectToastStyles() {
     if (document.getElementById('toast-engine-styles')) return;
     const style = document.createElement('style');
@@ -237,7 +237,7 @@ function removeFounderRow(id) {
     }
 }
 
-// 🎯 INTERCEPT ENGINE LOGIC: Target empty nodes inside hidden view layers cleanly
+//  INTERCEPT ENGINE LOGIC: Target empty nodes inside hidden view layers cleanly
 function executeNodalFormTransmission(event) {
     if (event) event.preventDefault();
 
@@ -261,7 +261,7 @@ function executeNodalFormTransmission(event) {
 
         if (isFieldEmpty && !firstInvalidField) {
             firstInvalidField = field;
-            // 🎯 FIX: section detect karne ke liye .form-section dhoondo (content- wala div nahi),
+            //  FIX: section detect karne ke liye .form-section dhoondo (content- wala div nahi),
             // taaki declaration-panel jaise bahar wale fields bhi sahi se handle ho jaayein
             // aur "hidden-section" check explicit ho, sirf id-prefix assume na ho.
             const closestSectionContent = field.closest('.accordion-content[id^="content-"]');
@@ -305,7 +305,7 @@ function executeNodalFormTransmission(event) {
         return false;
     }
 
-    // === VALIDATION PASSED: DISPATCH PACKAGES ===
+    //  VALIDATION PASSED: DISPATCH PACKAGES ===
     const formDataPayload = new FormData();
     form.querySelectorAll("input, textarea, select").forEach((field) => {
         // Ab har field ke paas guaranteed name hai, isliye id/fallback ki zaroorat nahi
@@ -354,7 +354,7 @@ function executeNodalFormTransmission(event) {
                 if (titleSpan) titleSpan.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Upload File`;
             });
 
-            // 🎯 SUCCESS CONFIRMATION SCREEN — replaces the toast on a successful submit
+            //  SUCCESS CONFIRMATION SCREEN — replaces the toast on a successful submit
             const extractedId = (data.message && data.message.match(/DMRC-[A-Z0-9]+/)) ? data.message.match(/DMRC-[A-Z0-9]+/)[0] : '';
             const idEl = document.getElementById('success-application-id');
             if (idEl && extractedId) idEl.textContent = extractedId;
@@ -379,7 +379,7 @@ function executeNodalFormTransmission(event) {
     return false;
 }
 
-// 🎯 VISUAL FEEDBACK: Selected file state tracker monitoring module
+//  VISUAL FEEDBACK: Selected file state tracker monitoring module
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("mainForm");
     if (form) {
@@ -428,11 +428,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-/* =========================================================================
-    🎯 FORM PROGRESS BAR — tracks % of required fields filled (including file
+
+     /*FORM PROGRESS BAR — tracks % of required fields filled (including file
     uploads). Radio buttons and same-name checkbox groups are counted as ONE
     logical field, not one per option.
-    ========================================================================= */
+     */
 function updateFormProgress() {
     const form = document.getElementById("mainForm");
     const fillEl = document.getElementById("form-progress-bar-fill");
@@ -471,13 +471,13 @@ function updateFormProgress() {
     fillEl.style.width = percent + '%';
     pctEl.textContent = percent + '%';
 
-    // 🎯 Single consistent color for the bar — dark blue throughout, no matter the percentage
+    //  Single consistent color for the bar — dark blue throughout, no matter the percentage
     fillEl.style.background = '#1e3a8a';
 
     window._formProgressMissingFields = missingFields; // used by debugFormProgress()
 }
 
-// 🎯 Call debugFormProgress() in the browser console to see exactly which
+//  Call debugFormProgress() in the browser console to see exactly which
 // required field names are still empty/unchecked/missing a file.
 function debugFormProgress() {
     updateFormProgress();
@@ -488,12 +488,12 @@ function debugFormProgress() {
     }
 }
 
-/* =========================================================================
-    🎯 DRAFT AUTO-SAVE — saves non-file field values to localStorage so the
+
+     /*DRAFT AUTO-SAVE — saves non-file field values to localStorage so the
     applicant doesn't lose progress if they close the tab mid-form. Files
     themselves cannot be restored (browser security), only text/select/
-    checkbox values.
-    ========================================================================= */
+    checkbox values.*/
+    
 const DRAFT_STORAGE_KEY = 'dmrc_application_draft_v1';
 let draftAutoSaveTimer = null;
 
@@ -563,16 +563,16 @@ function clearSavedDraft() {
     localStorage.removeItem(DRAFT_STORAGE_KEY);
 }
 
-// 🎯 SUCCESS CONFIRMATION SCREEN — "Back to Form" button handler
+//  SUCCESS CONFIRMATION SCREEN — "Back to Form" button handler
 function closeSuccessScreen() {
     const successScreen = document.getElementById('submission-success-screen');
     if (successScreen) successScreen.classList.remove('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* =========================================================================
-    🎯 CHATBOT FOR FAQ HELP — simple keyword-matched canned Q&A, no backend needed
-    ========================================================================= */
+
+    /* CHATBOT FOR FAQ HELP — simple keyword-matched canned Q&A, no backend needed
+     */
 const FAQ_KNOWLEDGE_BASE = [
     { keywords: ['dpiit'], question: "What is DPIIT proof?", answer: "DPIIT proof is your Startup India recognition certificate issued by the Department for Promotion of Industry and Internal Trade. You can download it from the Startup India portal if you're a recognized startup." },
     { keywords: ['udyam', 'msme'], question: "What is Udyam / MSME registration?", answer: "Udyam Registration is the official MSME registration certificate issued by the Ministry of MSME, Government of India. Upload the certificate if your entity is MSME registered." },
@@ -616,12 +616,12 @@ function addFaqMessage(text, sender) {
     messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
-/* =========================================================================
-    🎯 DYNAMIC FORM-FIELD KNOWLEDGE BASE — scans the actual form DOM (every
+
+  /*   DYNAMIC FORM-FIELD KNOWLEDGE BASE — scans the actual form DOM (every
     section + field label + upload requirement) so the chatbot can answer
     questions about ANY field in the form, not just the few hardcoded FAQs
     above. Built once and cached.
-    ========================================================================= */
+   */
 const FAQ_STOPWORDS = new Set(['the','is','are','a','an','of','for','to','and','in','on','do','does','i','you','your','my','what','how','can','need','needs','required','please','detail','details','with','if','any','it','this','that','be','has','have','yes','no','or','as','about','tell','me','which','upload','uploading']);
 
 function faqTokenize(text) {
@@ -727,11 +727,11 @@ function handleFaqChatbotSubmit(event) {
     return false;
 }
 
-/* =========================================================================
-    🎯 WIRE UP: progress bar + draft auto-save on form load/change, and clear
+/*
+     WIRE UP: progress bar + draft auto-save on form load/change, and clear
     draft after a successful submission (hooked from executeNodalFormTransmission's
     success branch via a custom event so we don't duplicate submit logic).
-    ========================================================================= */
+    */
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("mainForm");
     if (!form) return;
@@ -742,7 +742,7 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("input", () => { updateFormProgress(); scheduleDraftAutoSave(); });
     form.addEventListener("change", () => { updateFormProgress(); scheduleDraftAutoSave(); });
 
-    // 🎯 EXTRA SAFETY NET — runs in the capture phase, before the inline
+    //  EXTRA SAFETY NET — runs in the capture phase, before the inline
     // onsubmit="" handler even fires. Guarantees the browser NEVER does a
     // native page navigation/reload on submit, no matter what happens
     // later in executeNodalFormTransmission().
