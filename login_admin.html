@@ -10,11 +10,7 @@
     <link rel ="icon" href ="DMRC logo.png" type="image/png">
 
     <style>
-        /* =========================================================================
-           🎨 DMRC ADMIN GATEWAY — Interchange-Station Themed Split Layout
-           Signature: a vertical metro "line map" — every colored line on the network
-           converging into one glowing interchange node, standing for the gateway itself.
-           ========================================================================= */
+       
         :root {
             --navy-deep: #050f2b;
             --navy: #0a2159;
@@ -325,9 +321,9 @@
             .form-panel { padding: 34px 28px; }
         }
 
-        /* =========================================================================
-           🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
-           ========================================================================= */
+       
+          /* TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+            */
         .toast-container {
             position: fixed; top: 24px; right: 24px; z-index: 99999;
             display: flex; flex-direction: column; gap: 12px; pointer-events: none;
@@ -459,7 +455,7 @@
 </div>
 
 <script>
-    // 🎯 TOAST NOTIFICATION ENGINE
+    //  TOAST NOTIFICATION ENGINE
     function showToast(message, type = 'info', title = null, duration = 4500) {
         let container = document.querySelector('.toast-container');
         if (!container) {
@@ -595,9 +591,9 @@
         .then(data => {
             if (data.success) {
                showToast("Login successful. Redirecting...", "success", "Welcome");
-                // 🎯 JWT AUTHENTICATION — store the token so view.html can send it on admin API calls
+                //  JWT AUTHENTICATION — store the token so view.html can send it on admin API calls
                 if (data.token) localStorage.setItem('dmrc_admin_token', data.token);
-                // 🎯 FIXED REDIRECTION: Relative local path routing lock for view.html
+                //  FIXED REDIRECTION: Relative local path routing lock for view.html
                 setTimeout(() => { window.location.href = 'view.html'; }, 900);
             } else {
                 let errorMsg = data.message;
