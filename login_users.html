@@ -10,11 +10,7 @@
     <link rel ="icon" href ="DMRC logo.png" type="image/png">
 
     <style>
-        /* =========================================================================
-           🎨 DMRC USER PORTAL — Interchange-Station Themed Split Layout
-           Signature: a vertical metro "line map" — every colored line on the network
-           converging into one glowing interchange node, standing for the gateway itself.
-           ========================================================================= */
+       
         :root {
             --navy-deep: #04123a;
             --navy: #0a2359;
@@ -158,7 +154,7 @@
             color: rgba(255,255,255,0.45);
         }
 
-        /* ===================== RIGHT: form panel ===================== */
+        /* RIGHT: form panel  */
         .form-panel {
             flex: 1;
             display: flex;
@@ -313,9 +309,9 @@
         }
         .forgot-password-link:hover { color: #091e42; text-decoration: underline; }
 
-        /* =========================================================================
-           🎯 TOAST NOTIFICATION ENGINE - Replaces native alert() popups
-           ========================================================================= */
+       
+            /*TOAST NOTIFICATION ENGINE - Replaces native alert() popups
+           */
         .toast-container {
             position: fixed; top: 24px; right: 24px; z-index: 99999;
             display: flex; flex-direction: column; gap: 12px; pointer-events: none;
@@ -360,9 +356,9 @@
         .toast.warning .toast-progress { background: rgba(217, 119, 6, 0.35); }
         .toast.info { border-left-color: var(--navy-brand); }
 
-        /* =========================================================================
-           🔒 FORGOT PASSWORD OVERLAY POPUP MODAL ARCHITECTURE
-           ========================================================================= */
+        /* 
+            FORGOT PASSWORD OVERLAY POPUP MODAL ARCHITECTURE
+           */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -406,7 +402,7 @@
             display: none !important; visibility: hidden !important; pointer-events: none !important;
         }
 
-        /* ===================== Responsive ===================== */
+        /*  Responsive  */
         @media (max-width: 860px) {
             .portal-shell { flex-direction: column; max-width: 460px; min-height: unset; }
             .brand-panel { flex: none; padding: 26px 30px; flex-direction: row; align-items: center; justify-content: space-between; }
@@ -560,7 +556,7 @@
 </div>
 
 <script>
-    // 🎯 TOAST NOTIFICATION ENGINE
+    //  TOAST NOTIFICATION ENGINE
     function showToast(message, type = 'info', title = null, duration = 4500) {
         let container = document.querySelector('.toast-container');
         if (!container) {
@@ -652,7 +648,7 @@
         document.getElementById('forgot-password-form').reset();
     }
 
-    // 🎯 APPLICATION STATUS TRACKING — applicant-side status check modal
+    //  APPLICATION STATUS TRACKING — applicant-side status check modal
     function openStatusModal(e) {
         e.preventDefault();
         document.getElementById('status-check-modal').classList.add('active');
@@ -786,10 +782,10 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                // 🎯 FIXED ALERTS ACCORDING TO USER'S CRITERIA
+                //  FIXED ALERTS ACCORDING TO USER'S CRITERIA
                 if (currentViewMode === 'login') {
                     showToast("Login successful. Redirecting...", "success", "Welcome");
-                    // 🎯 JWT AUTHENTICATION — store token for the applicant session
+                    //  JWT AUTHENTICATION — store token for the applicant session
                     if (data.token) localStorage.setItem('dmrc_user_token', data.token);
                     setTimeout(() => { window.location.href = 'index1.html'; }, 900);
                 } else {
