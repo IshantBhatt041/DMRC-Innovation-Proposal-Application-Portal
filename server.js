@@ -7,17 +7,17 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid'); // Used to generate a unique Application ID
 const bcrypt = require('bcryptjs'); // Used for secure password encryption
-const nodemailer = require('nodemailer'); // 🎯 EMAIL NOTIFICATIONS
-const jwt = require('jsonwebtoken'); // 🎯 JWT AUTHENTICATION
-const { body, validationResult } = require('express-validator'); // 🎯 INPUT VALIDATION
-const http = require('http'); // 🎯 SOCKET.IO — needs a raw http server to attach to
-const { Server } = require('socket.io'); // 🎯 SOCKET.IO — real-time new-application badge
+const nodemailer = require('nodemailer'); //  EMAIL NOTIFICATIONS
+const jwt = require('jsonwebtoken'); //  JWT AUTHENTICATION
+const { body, validationResult } = require('express-validator'); //  INPUT VALIDATION
+const http = require('http'); //  SOCKET.IO — needs a raw http server to attach to
+const { Server } = require('socket.io'); //  SOCKET.IO — real-time new-application badge
 
 const app = express();
 app.use(require('helmet')({
     // Cross-Origin-Resource-Policy relaxed so uploaded files / uploads route still load cross-origin from the frontend
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    // 🎯 Content-Security-Policy OFF — the frontend pages (index1.html, view.html,
+    //  Content-Security-Policy OFF — the frontend pages (index1.html, view.html,
     // login pages) rely heavily on inline onclick="..."/onsubmit="..." handlers.
     // Helmet's default CSP blocks inline scripts, which silently broke things like
     // the section accordions once the frontend started being served from this same
@@ -28,13 +28,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serves uploaded files statically
 
-// 🎯 SERVE FRONTEND FILES DIRECTLY — no Live Server needed anymore.
+//  SERVE FRONTEND FILES DIRECTLY — no Live Server needed anymore.
 // Put index1.html, view.html, login_admin.html, login_users.html, script.js,
 // style.css, DMRC logo.png etc. in the SAME folder as server.js. Express will
 // serve all of them automatically from http://localhost:5000/
 app.use(express.static(__dirname));
 
-// 🎯 SOCKET.IO — real-time new-application badge on the admin dashboard.
+//  SOCKET.IO — real-time new-application badge on the admin dashboard.
 // Express needs to run on top of a raw http server so Socket.io can attach to it.
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     });
 });
 
-// 🎯 JWT AUTHENTICATION — secret + helpers.
+//  JWT AUTHENTICATION — secret + helpers.
 // Change JWT_SECRET to a long random string in production (e.g. via an env var).
 const JWT_SECRET = 'dmrc-portal-super-secret-change-this-in-production';
 const JWT_EXPIRY = '2h';
@@ -78,7 +78,7 @@ function requireAdminAuth(req, res, next) {
     });
 }
 
-// 🔒 PER-ACCOUNT LOGIN LOCKOUT CONFIG
+//  PER-ACCOUNT LOGIN LOCKOUT CONFIG
 // Replaces the old IP-based express-rate-limit approach. Failed attempts are now
 // tracked PER ACCOUNT (per email) in the database — success resets the counter,
 // 5 consecutive failures locks that specific account for LOCK_DURATION_MS.
@@ -89,7 +89,7 @@ const LOCK_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 // is tracked here in memory instead. Note: this resets if the server restarts.
 let fixedAdminAttemptTracker = { count: 0, lockedUntil: null };
 
-// 🎯 EMAIL NOTIFICATIONS — Nodemailer transporter config.
+//  EMAIL NOTIFICATIONS — Nodemailer transporter config.
 // Fill in your real sender email + app password below (for Gmail, use an
 // "App Password", not your normal login password: https://myaccount.google.com/apppasswords).
 // This never blocks form submission — if email sending fails, the applicant's
@@ -406,10 +406,10 @@ app.post('/api/submit-form', upload.any(), (req, res) => {
                 return res.status(500).json({ success: false, message: "Database insertion failure: " + err.message });
             }
 
-            // 🎯 EMAIL NOTIFICATIONS — fire-and-forget, never blocks the response
+            //  EMAIL NOTIFICATIONS — fire-and-forget, never blocks the response
             sendApplicationEmails(applicationId, f('company_name'), f('company_email'));
 
-            // 🎯 SOCKET.IO — notify all connected admin dashboards live, no refresh needed
+            //  SOCKET.IO — notify all connected admin dashboards live, no refresh needed
             io.emit('newApplication', {
                 applicationId,
                 companyName: f('company_name'),
@@ -427,7 +427,7 @@ app.post('/api/submit-form', upload.any(), (req, res) => {
 });
 
 // 4. CONTROLLER VIEW API - Fetches all submitted applications for review
-// 🎯 SEARCH + FILTER + PAGINATION — accepts optional query params:
+//  SEARCH + FILTER + PAGINATION — accepts optional query params:
 //    search (company name), entityType, dateFrom, dateTo, page, limit
 app.get('/api/admin/view-applications', requireAdminAuth, (req, res) => {
     const { search, entityType, dateFrom, dateTo, page = 1, limit = 10 } = req.query;
@@ -481,7 +481,7 @@ app.get('/api/admin/view-applications', requireAdminAuth, (req, res) => {
 });
 
 
-// 🎯 APPLICATION STATUS TRACKING — ADMIN: update status of one application via dropdown
+//  APPLICATION STATUS TRACKING — ADMIN: update status of one application via dropdown
 app.patch('/api/admin/update-status/:applicationId', requireAdminAuth, (req, res) => {
     const { applicationId } = req.params;
     const { status } = req.body;
@@ -507,7 +507,7 @@ app.patch('/api/admin/update-status/:applicationId', requireAdminAuth, (req, res
 });
 
 
-// 🎯 APPLICATION STATUS TRACKING — APPLICANT: check status of their own application by ID
+//  APPLICATION STATUS TRACKING — APPLICANT: check status of their own application by ID
 app.get('/api/application-status/:applicationId', (req, res) => {
     const { applicationId } = req.params;
 
@@ -525,9 +525,9 @@ app.get('/api/application-status/:applicationId', (req, res) => {
 });
 
 
-/* =========================================================================
-    🔒 SECURITY MODULE: USER MANAGEMENT & ENCRYPTION APIS (NO EMOJIS)
-    ========================================================================= */
+/*
+     SECURITY MODULE: USER MANAGEMENT & ENCRYPTION APIS (NO EMOJIS)
+     */
 
 // 5. --- USER REGISTRATION WITH SECURE PASSWORD HASHING ---
 app.post('/api/register', [
@@ -573,7 +573,7 @@ app.post('/api/register', [
 });
 
 // 6. --- USER AUTHENTICATION GATEWAY (LOGIN API WITH DECRYPTION COMPARE) ---
-// 🔒 PER-ACCOUNT LOCKOUT: tracks failed_attempts + locked_until on the `users` row
+//  PER-ACCOUNT LOCKOUT: tracks failed_attempts + locked_until on the `users` row
 // itself (per email), instead of the old global IP-based rate limiter.
 app.post('/api/login', [
     body('email').trim().isEmail().withMessage('A valid email is required').normalizeEmail(),
@@ -603,7 +603,7 @@ app.post('/api/login', [
 
         const user = results[0];
 
-        // 🔒 Account currently locked?
+        //  Account currently locked?
         if (user.locked_until && new Date(user.locked_until) > new Date()) {
             const minutesLeft = Math.ceil((new Date(user.locked_until) - new Date()) / 60000);
             return res.status(403).json({
@@ -616,7 +616,7 @@ app.post('/api/login', [
             const isPasswordMatch = await bcrypt.compare(password, user.password);
 
             if (isPasswordMatch) {
-                // ✅ Success — reset failed-attempt counter for this account
+                // Success — reset failed-attempt counter for this account
                 db.query("UPDATE users SET failed_attempts = 0, locked_until = NULL WHERE id = ?", [user.id]);
                 const token = signToken({ id: user.id, email: user.email, role: 'user' });
                 return res.json({ success: true, message: "Access Clearance Granted. Redirecting to Innovation Form...", token });
@@ -660,9 +660,9 @@ httpServer.listen(5000, () => {
 
 
 /* =========================================================================
-    🔒 ADMINISTRATIVE CORE MODULE (DYNAMIC EXPANSION - FIXED + DATABASE BACKED)
+     ADMINISTRATIVE CORE MODULE (DYNAMIC EXPANSION - FIXED + DATABASE BACKED)
     ========================================================================= */
-// 🔒 PER-ACCOUNT LOCKOUT: fixed root admin uses an in-memory tracker (it has no
+//  PER-ACCOUNT LOCKOUT: fixed root admin uses an in-memory tracker (it has no
 // DB row); sub-admins use failed_attempts/locked_until on the portal_sub_admins row.
 app.post('/api/admin-login', async (req, res) => {
     const { username, email, password } = req.body;
@@ -677,7 +677,7 @@ app.post('/api/admin-login', async (req, res) => {
     const FIXED_ADMIN_PASS = "DmrcAdmin2026";
 
     if (username === FIXED_ADMIN_USER && email === FIXED_ADMIN_EMAIL) {
-        // 🔒 Locked?
+        //  Locked?
         if (fixedAdminAttemptTracker.lockedUntil && fixedAdminAttemptTracker.lockedUntil > Date.now()) {
             const minutesLeft = Math.ceil((fixedAdminAttemptTracker.lockedUntil - Date.now()) / 60000);
             return res.status(403).json({
@@ -687,7 +687,7 @@ app.post('/api/admin-login', async (req, res) => {
         }
 
         if (password === FIXED_ADMIN_PASS) {
-            // ✅ Success — reset
+            //  Success — reset
             fixedAdminAttemptTracker = { count: 0, lockedUntil: null };
             const token = signToken({ username, email, role: 'admin' });
             return res.json({
@@ -742,7 +742,7 @@ app.post('/api/admin-login', async (req, res) => {
             // Symmetrical bcrypt password decrypt match check
             const isPasswordMatch = await bcrypt.compare(password, subAdmin.password);
             if (isPasswordMatch) {
-                // ✅ Success — reset
+                //  Success — reset
                 db.query("UPDATE portal_sub_admins SET failed_attempts = 0, locked_until = NULL WHERE id = ?", [subAdmin.id]);
                 const token = signToken({ id: subAdmin.id, email: subAdmin.email, role: 'admin' });
                 return res.json({
@@ -779,7 +779,7 @@ app.post('/api/admin-login', async (req, res) => {
 });
 
 
-// 🎯 NEW ENDPOINT: CREATES SUB ADMISSIONS ACCOUNT GENERATION NODES WITH BCRYPT HASHING
+//  NEW ENDPOINT: CREATES SUB ADMISSIONS ACCOUNT GENERATION NODES WITH BCRYPT HASHING
 app.post('/api/admin/users', requireAdminAuth, async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -817,7 +817,7 @@ app.post('/api/admin/users', requireAdminAuth, async (req, res) => {
 });
 
 
-// 🎯 NEW ENDPOINT: FETCHES LIST OF SUB-ADMIN RECORDS TO DISPLAY IN THE MODAL VIEW TABLE
+//  NEW ENDPOINT: FETCHES LIST OF SUB-ADMIN RECORDS TO DISPLAY IN THE MODAL VIEW TABLE
 app.get('/api/admin/users', requireAdminAuth, (req, res) => {
     const fetchAdminsQuery = "SELECT name, email FROM portal_sub_admins ORDER BY created_at DESC";
     db.query(fetchAdminsQuery, (err, results) => {
